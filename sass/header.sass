@@ -1,0 +1,180 @@
+@import "bourbon"
+@import "vars.sass"
+@import "../app/libs/font-awesome/css/font-awesome.min"
+
+body
+	font-size: 16px
+	min-width: 320px
+	position: relative
+	line-height: 1.6
+	font-family: "RobotoRegular", sans-serif
+	overflow-x: hidden
+input
+  outline: none
+  &::placeholder
+    color: rgba(0,0,0,.4)
+.hidden
+	display: none
+
+header.main_header
+  width: 100%
+  height: 725px
+  background-image: url(../img/header_bg.jpg)
+  background-size: cover
+  .main_nav
+    //width: 100% !important
+    height: 80px !important
+    background-color: rgba(0,0,0,.6) !important
+    box-shadow: 0px 21px 30px 10px rgba(0,0,0,.6)
+    border: none
+    .main_list_header_left, .navbar-right
+      padding-left: 0
+      min-height: 85px
+      margin: 0
+
+      li#noDrop
+        display: inline-block
+        a.link_nodrop
+          color: #fff
+          display: block
+          padding: 29.9px 14px
+          text-decoration: none
+          font-family: sans-serif
+          font-size: em(16px)
+          border-top: transparent 2px solid
+          transition: all .2s ease-in-out
+          &:hover
+            border-top: $AColor 2px solid
+            padding: 26.9px 14px
+            i.fa
+              color: $AColor
+          i.fa
+            padding: 0 5px 0 0
+            transition: all .2s ease-in-out
+        .active
+          border-top: $AColor 2px solid !important
+          i.fa
+            color: $AColor
+      li.phone-nav
+        padding: 20px 0
+        span
+          color: #fff
+.no-nodrop
+
+.mark_MColor
+  background-color: $MColor
+  padding: 3px
+  border-radius: 10px
+.welcome
+  font-family: "Roboto Condensed Light", sans-serif
+.navbar-default
+  .navbar-nav
+    .open
+      a:focus
+        background-color: transparent
+        border-top: $MColor 2px solid !important
+        &:active
+          border-top: $MColor 2px solid !important
+
+
+
+a.navbar-brand
+  padding: 27.9px 40px 29.9px 0
+  color: #fff !important
+  font-size: em(27px)
+  &:hover
+    color: darken(#fff, 1%)
+.cgrey
+  color: grey
+  font-size: em(12px)
+.cMColor
+  color: $MColor
+
+
+.drop-noactive
+  //animation: dropmenu_fadeOut .2s
+  display: none
+.drop-active
+  animation: dropmenu_fadeIn .3s
+
+.dropmenu
+  position: absolute
+  top: 81.78px
+  right: 0
+  min-height: 100px
+  min-width: 200px
+  height: 240px
+  width: 240px
+  background-color: rgba(255, 255, 255, 0.95)
+  border-radius: 3px
+  box-shadow: 0px 3px 15px rgb(0, 0, 0)
+  padding-top: 10px
+
+@keyframes dropmenu_fadeIn
+  0%
+    top: 100px
+    display: none
+    opacity: 0
+  50%
+    op: 0.4
+  100%
+    opacity: 1
+    display: block
+    top: 81.78px
+
+
+//defButton button_login
+.defButton
+  border: none
+  border-bottom: 2px solid darken($AColor, 10%) !important
+  border-radius: 20px
+  background-color: $AColor
+  color: #fff
+  height: 33px
+.button_login
+  outline: none
+  display: block
+  width: 150px
+  margin: auto
+  &:hover
+    background-color: darken($AColor, 2%)
+  &:active
+    background-color: lighten($AColor, 2%)
+.defInput
+  margin: 20px auto
+  display: block
+  width: 200px
+  border-radius: 2px
+  border: none
+  border: 1px solid rgba($AColor, 0.9)
+  height: 30px
+  padding-left: 20px
+  color: #333
+.dropmenuLogin::before
+  font-family: "FontAwesome"
+  content: "\f007"
+  position: absolute
+  margin: 3px 0 0 25px
+.dropmenuPass::before
+  font-family: "FontAwesome"
+  content: "\f023"
+  position: absolute
+  margin: 3px 0 0 25px
+p
+  .dropmenu_link
+    color: rgba(0,0,0,0.5)
+    text-align: center
+    width: 240px
+    display: inline
+    &:hover
+      color: rgba(0,0,0,0.6)
+    &:focus
+      color: rgba(0,0,0,0.6)
+    &:visited
+      color: rgba(0,0,0,0.6)
+    &:active
+      color: rgba(0,0,0,0.6)
+.wrap_dropmenu_link
+  text-align: center
+  padding: 10px 0 0 0 
+  margin: 0
