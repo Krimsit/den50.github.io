@@ -1,6 +1,6 @@
 @import "bourbon"
 @import "vars.sass"
-
+@import "fonts.sass"
 //Load Libs SASS
 @import "app/libs/animate/animate.sass"
 
@@ -28,7 +28,124 @@ body textarea:required:valid
 	color: #666
 
 //Custom Styles Here
+.advantages
+  width: 100%
+  height: 1000px
+  background-color: #F8F8F8
+  color: #000
+  padding: 50px 0 70px 0
+  margin-bottom: 20px
+.item_advantages
+  padding: 0
 
 
+.item_row_advantages_img
+  height: 350px
+  width: 100%
+  position: relative
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    background-color: rgba(0, 0, 0, .3)
+    width: 100%
+    height: 350px
+.item_row_advantages_desc
+  height: 350px
+  width: 100%
+  background-color: #fff
+  padding: 40px 30px
+  h3
+    //padding: 40px 0 0 0
+    margin: 0
+    color: $MColor
+    font-family: 'open-sans-bold'
+    font-size: em(17px)
+    letter-spacing: 1px
+
+.uppercase
+  text-transform: uppercase
+
+.caption_advantages
+  color: #212121
+  font-family: "open-sans-bold"
+  letter-spacing: 3px
+  padding: 30px 0 20px 0
+  font-size: em(19px)
+.caption_advantagas_detailed
+  color: #777777
+  line-height: 25px
+.number_advantages
+  font-family: "Times New Roman"
+  font-style: italic
+.header_advantages
+  font-family: 'Josefin Sans', sans-serif;
+  letter-spacing: 5px
+  padding: 10px 0 40px 0
+.weves
+  img
+    display: inline-block
+
+.main_advantageses
+  width: 100%
+  height: 700px
+  display: block
+  box-shadow: 0 0 40px rgba(0,0,0,0.35)
+.caret_left_advantages
+  color: #fff
+  position: absolute
+  right: -2px
+  top: 50px
+  font-size: em(35px)
+.caret_right_advantages
+  color: #fff
+  position: absolute
+  left: -2px
+  top: 50px
+  font-size: em(35px)
+.caret_up_advantages
+  color: #fff
+  position: absolute
+  left: 50px
+  bottom: -12px
+  font-size: em(35px)
+
+#page
+  background-image: url(../img/8647.jpg)
+  background-repeat: no-repeat
+  background-size: cover
+  background-position-y: center
+  padding: 50px 0 20px 0
+  margin-bottom: 30px
+
+.image-caption.current
+  opacity: 0.75 !important
+
+
+.controll-g
+  font-size: em(24px) !important
+.controls
+  padding: 5px 
+  background-color: #fff
+  height: 40px !important
+  border-radius: 3px
+.navigtion#thumbs
+  padding-top: 250px !important
+.container
+  position: relative
+  .morephoto
+    float: right
+    right: 70px
+    bottom: 160px
+    padding: 2px 45px
+    background-color: $MColor
+    color: #fff
+    font-size: em(20px)
+    border-radius: 30px
+    position: absolute
+.map
+  iframe
+    width: 100%
 //ALWAYS END
 @import "media"

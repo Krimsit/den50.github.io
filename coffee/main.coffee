@@ -17,4 +17,3 @@ main_header.onclick = (e)->
     dropmenu.classList.add "drop-noactive"
     active = no
     console.dir e.target
-    
