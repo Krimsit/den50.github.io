@@ -33,6 +33,7 @@ App = React.createClass({
       Nodes: [],
       Paths: [],
       deletingMode: false,
+      modeNodesNumbering: false,
       history_app: [],
       _Matrix: [],
       MatrixNamesNodes: [],
@@ -150,9 +151,15 @@ App = React.createClass({
       maxValArr.push(+i.id.match(/\d+/g)[0]);
     }
     maxVal = Math.max.apply(null, maxValArr);
-    this.setState({
-      val: maxVal + 1
-    });
+    if (this.state.Nodes.length === 0) {
+      this.setState({
+        val: 0
+      });
+    } else {
+      this.setState({
+        val: maxVal + 1
+      });
+    }
     this.setState({
       MatrixNamesNodes: tmpMN
     });
@@ -260,6 +267,13 @@ App = React.createClass({
         }
       };
     })(this));
+    ee.on("ChangeModeNodesNumbering", (function(_this) {
+      return function(data) {
+        return _this.setState({
+          modeNodesNumbering: data.data
+        });
+      };
+    })(this));
     return ee.on('changeHistory', (function(_this) {
       return function(data) {
         return _this.setState({
@@ -292,7 +306,8 @@ App = React.createClass({
           "cy": i.cy,
           "id": i.id,
           "bgc": i.color,
-          "r": i.r
+          "r": i.r,
+          "numberingNodesMode": _this.state.modeNodesNumbering
         });
       };
     })(this))), React.createElement(Configs, {
@@ -308,7 +323,7 @@ module.exports = App;
 
 
 },{"./config/classes/Configs":3,"./config/modules/history.module":9,"./config/modules/matrix.fn":10,"./figures/Node":11,"./figures/Path":12,"./global/Events":13,"react":"react"}],3:[function(require,module,exports){
-var COLORS, Colors, Configs, Deleting, History, Matrix, RadiusChanger, React, ee;
+var COLORS, Colors, Configs, History, Matrix, Mods, RadiusChanger, React, ee;
 
 React = require('react');
 
@@ -322,7 +337,7 @@ RadiusChanger = require("./RadiusChanger");
 
 History = require('./history.class');
 
-Deleting = require("./deleting.class");
+Mods = require("./mods.class");
 
 COLORS = ["#2e9f5c", "#47356C", "#FF0018", "#0DF6FF", "#440BDB", "#FFAA0D"];
 
@@ -391,7 +406,7 @@ Configs = React.createClass({
       "key": "Colors"
     }), React.createElement("hr", null), React.createElement(RadiusChanger, {
       "key": "RadiusChanger"
-    }), React.createElement("hr", null), React.createElement(Deleting, null), React.createElement("hr", null), React.createElement(Matrix, {
+    }), React.createElement("hr", null), React.createElement(Mods, null), React.createElement("hr", null), React.createElement(Matrix, {
       "matrix": this.props.matrix,
       "key": "Matrix"
     }), React.createElement("hr", null), React.createElement(History, {
@@ -405,7 +420,7 @@ module.exports = Configs;
 
 
 
-},{"../../global/Events":13,"./RadiusChanger":4,"./colors":5,"./deleting.class":6,"./history.class":7,"./matrix.class":8,"react":"react"}],4:[function(require,module,exports){
+},{"../../global/Events":13,"./RadiusChanger":4,"./colors":5,"./history.class":6,"./matrix.class":7,"./mods.class":8,"react":"react"}],4:[function(require,module,exports){
 var RadiusChanger, React, ee;
 
 React = require('react');
@@ -501,50 +516,6 @@ module.exports = Colors;
 
 
 },{"react":"react"}],6:[function(require,module,exports){
-var Deleting, React, ee, history_app;
-
-React = require("react");
-
-ee = require('../../global/Events');
-
-history_app = require("../modules/history.module");
-
-Deleting = React.createClass({
-  displayName: "Deleting",
-  handleChange: function(e) {
-    history_app.setEvent({
-      deletingMode: e.target.checked
-    }, "deleteMode");
-    return ee.emit('changeDeletingMode', {
-      data: e.target.checked
-    });
-  },
-  render: function() {
-    return React.createElement("div", {
-      "className": "wrapDeleting"
-    }, React.createElement("div", {
-      "className": "labelFor"
-    }, React.createElement("span", null, "Deleting Mode: ")), React.createElement("div", {
-      "className": "toggleWrapper"
-    }, React.createElement("input", {
-      "type": "checkbox",
-      "name": "toggle2",
-      "className": "mobileToggle",
-      "id": "toggle2",
-      "onChange": ((function(_this) {
-        return function(e) {
-          return _this.handleChange(e);
-        };
-      })(this))
-    })));
-  }
-});
-
-module.exports = Deleting;
-
-
-
-},{"../../global/Events":13,"../modules/history.module":9,"react":"react"}],7:[function(require,module,exports){
 var History, React;
 
 React = require('react');
@@ -569,7 +540,7 @@ module.exports = History;
 
 
 
-},{"react":"react"}],8:[function(require,module,exports){
+},{"react":"react"}],7:[function(require,module,exports){
 var Matrix, React;
 
 React = require('react');
@@ -600,7 +571,80 @@ module.exports = Matrix;
 
 
 
-},{"react":"react"}],9:[function(require,module,exports){
+},{"react":"react"}],8:[function(require,module,exports){
+var Deleting, React, ee, history_app;
+
+React = require("react");
+
+ee = require('../../global/Events');
+
+history_app = require("../modules/history.module");
+
+Deleting = React.createClass({
+  displayName: "Mods",
+  handleChangeDeleting: function(e) {
+    history_app.setEvent({
+      deletingMode: e.target.checked
+    }, "deleteMode");
+    return ee.emit('changeDeletingMode', {
+      data: e.target.checked
+    });
+  },
+  handleChangeModeNodesNumbering: function(e) {
+    history_app.setEvent({
+      modeNodesNumbering: e.target.checked
+    }, "modeNodesNumbering");
+    return ee.emit('ChangeModeNodesNumbering', {
+      data: e.target.checked
+    });
+  },
+  render: function() {
+    return React.createElement("div", {
+      "className": "wrapMods"
+    }, React.createElement("i", {
+      "class": "fa fa-sliders",
+      "aria-hidden": "true"
+    }), React.createElement("div", {
+      "className": "wrapDeleting"
+    }, React.createElement("div", {
+      "className": "labelFor"
+    }, React.createElement("span", null, "Deleting Mode: ")), React.createElement("div", {
+      "className": "toggleWrapper"
+    }, React.createElement("input", {
+      "type": "checkbox",
+      "name": "toggle2",
+      "className": "mobileToggle",
+      "id": "toggle2",
+      "onChange": ((function(_this) {
+        return function(e) {
+          return _this.handleChangeDeleting(e);
+        };
+      })(this))
+    }))), React.createElement("div", {
+      "className": "wrapModeNodesNumbering"
+    }, React.createElement("div", {
+      "className": "labelFor"
+    }, React.createElement("span", null, "ModeNodesNumbering: ")), React.createElement("div", {
+      "className": "toggleWrapper"
+    }, React.createElement("input", {
+      "type": "checkbox",
+      "name": "toggle2",
+      "className": "mobileToggle",
+      "id": "toggle2",
+      "onChange": ((function(_this) {
+        return function(e) {
+          return _this.handleChangeModeNodesNumbering(e);
+        };
+      })(this))
+    }))));
+  }
+});
+
+module.exports = Deleting;
+
+
+
+},{"../../global/Events":13,"../modules/history.module":9,"react":"react"}],9:[function(require,module,exports){
 var History_class, ee, history_app;
 
 ee = require("../../global/Events");
@@ -631,31 +675,24 @@ History_class = (function() {
     tmp["type"] = type_event;
     if (type_event === "AddNode") {
       tmp["MainData"] = obj.id;
-    } else {
-
     }
     if (type_event === "changeColorNode") {
       tmp["MainData"] = obj.color;
-    } else {
-
     }
     if (type_event === "AddPath") {
       tmp["MainData"] = obj.d;
-    } else {
-
     }
     if (type_event === "changeRadiusNode") {
       tmp["MainData"] = obj.r;
-    } else {
-
     }
     if (type_event === "deleteMode") {
-      tmp["MainData"] = (obj.deletingMode ? "true" : "false");
-    } else {
-
+      tmp["MainData"] = "" + obj.deletingMode;
     }
     if (type_event === "DeleteNodeById") {
       tmp["MainData"] = obj.id;
+    }
+    if (type_event === "modeNodesNumbering") {
+      tmp["MainData"] = "" + obj.modeNodesNumbering;
     }
     tmp["date"] = strDate;
     if (obj.id != null) {
@@ -768,24 +805,34 @@ React = require('react');
 Node = React.createClass({
   displayName: 'Node',
   render: function() {
-    return React.createElement("g", null, React.createElement("circle", {
-      "cx": this.props.cx,
-      "cy": this.props.cy,
-      "r": this.props.r,
-      "fill": this.props.bgc,
-      "id": this.props.id
-    }), React.createElement("text", {
-      "x": this.props.cx,
-      "y": this.props.cy - 3,
-      "id": this.props.id,
-      "stroke": "#fff",
-      "fill": "#fff",
-      "textAnchor": "middle",
-      "alignmentBaseline": "middle",
-      "dy": ".6em",
-      "fontFamily": "sans-serif",
-      "fontSize": "17px"
-    }, (this.props.id.match(/\d+/g)[0])));
+    if (this.props.numberingNodesMode) {
+      return React.createElement("g", null, React.createElement("circle", {
+        "cx": this.props.cx,
+        "cy": this.props.cy,
+        "r": this.props.r,
+        "fill": this.props.bgc,
+        "id": this.props.id
+      }), React.createElement("text", {
+        "x": this.props.cx,
+        "y": this.props.cy - 3,
+        "id": this.props.id,
+        "stroke": "#fff",
+        "fill": "#fff",
+        "textAnchor": "middle",
+        "alignmentBaseline": "middle",
+        "dy": ".6em",
+        "fontFamily": "sans-serif",
+        "fontSize": "17px"
+      }, (this.props.id.match(/\d+/g)[0])));
+    } else {
+      return React.createElement("circle", {
+        "cx": this.props.cx,
+        "cy": this.props.cy,
+        "r": this.props.r,
+        "fill": this.props.bgc,
+        "id": this.props.id
+      });
+    }
   }
 });
 
