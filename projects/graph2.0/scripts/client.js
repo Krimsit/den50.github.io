@@ -10,7 +10,7 @@ React.render(React.createElement(App, null), document.getElementById('app'));
 
 
 },{"./app":2,"react":"react"}],2:[function(require,module,exports){
-var App, Configs, Node, Path, React, ee, history_app, mx;
+var App, Configs, Node, Path, React, amx, dejkstra, ee, getWeight, get_graph, history_app;
 
 React = require('react');
 
@@ -20,11 +20,17 @@ Node = require("./figures/Node");
 
 Path = require("./figures/Path");
 
+getWeight = require("./config/modules/calcWeightPaths.fn");
+
 Configs = require('./config/classes/Configs');
 
-mx = require('./config/modules/matrix.fn');
+amx = require('./config/modules/adjacency_matrix.fn');
 
 history_app = require("./config/modules/history.module");
+
+dejkstra = require("./config/modules/dejkstra.algorithm.fn");
+
+get_graph = require("./config/modules/get_graph");
 
 App = React.createClass({
   displayName: 'App',
@@ -34,9 +40,13 @@ App = React.createClass({
       Paths: [],
       deletingMode: false,
       modeNodesNumbering: false,
+      calcWeightMode: false,
+      addItemMapMode: false,
+      STARTNode: "",
       history_app: [],
       _Matrix: [],
       MatrixNamesNodes: [],
+      maps: [],
       colorNodes: "#2e9f5c",
       radiusNode: 20,
       IdsPath: [],
@@ -44,6 +54,8 @@ App = React.createClass({
     };
   },
   handleClick: function(e) {
+    var i, j, k, len, len1, len2, m, n, ref, ref1, ref2, results, results1, tmp;
+    console.log(this.state.MatrixNamesNodes);
     if (e.target.nodeName === "svg" && !this.state.deletingMode) {
       this.setState({
         val: this.state.val + 1
@@ -51,10 +63,70 @@ App = React.createClass({
       this.AddNode(e.nativeEvent.offsetX, e.nativeEvent.offsetY, "circle" + this.state.val, this.state.colorNodes, this.state.radiusNode);
     }
     if (e.target.nodeName === "circle" || e.target.nodeName === "text") {
-      if (!this.state.deletingMode) {
-        return this.AddPath(e.target.id);
+      if (this.state.addItemMapMode) {
+        this.setState({
+          STARTNode: e.target.attributes.id.nodeValue
+        });
+        if (this.state.STARTNode === "") {
+          ref = this.state.Nodes;
+          results = [];
+          for (j = k = 0, len = ref.length; k < len; j = ++k) {
+            i = ref[j];
+            if (i.id === e.target.attributes.id.nodeValue) {
+              tmp = this.state.Nodes;
+              tmp[j].color = "#FF0018";
+              this.setState({
+                Nodes: tmp
+              });
+              this.state.maps.push(i);
+              break;
+            } else {
+              results.push(void 0);
+            }
+          }
+          return results;
+        } else {
+          ref1 = this.state.Nodes;
+          for (j = m = 0, len1 = ref1.length; m < len1; j = ++m) {
+            i = ref1[j];
+            if (i.id === this.state.STARTNode) {
+              tmp = this.state.Nodes;
+              tmp[j].color = this.state.colorNodes;
+              this.setState({
+                Nodes: tmp
+              });
+              this.state.maps.push(i);
+              break;
+            }
+          }
+          ref2 = this.state.Nodes;
+          results1 = [];
+          for (j = n = 0, len2 = ref2.length; n < len2; j = ++n) {
+            i = ref2[j];
+            if (i.id === e.target.attributes.id.nodeValue) {
+              tmp = this.state.Nodes;
+              tmp[j].color = "#FF0018";
+              this.setState({
+                Nodes: tmp
+              });
+              this.state.maps.push(i);
+              break;
+            } else {
+              results1.push(void 0);
+            }
+          }
+          return results1;
+        }
       } else {
-        return this.DeleteNodeById(e.target.id);
+        if (e.altKey) {
+          return this.DeleteNodeById(e.target.id);
+        } else {
+          if (!this.state.deletingMode) {
+            return this.AddPath(e.target.id);
+          } else {
+            return this.DeleteNodeById(e.target.id);
+          }
+        }
       }
     }
   },
@@ -67,7 +139,7 @@ App = React.createClass({
       r: r
     });
     this.setState({
-      _Matrix: mx(this.state.MatrixNamesNodes, this.state.Nodes.length)
+      _Matrix: amx(this.state.MatrixNamesNodes, this.state.Paths, this.state.Nodes.length, this.state.calcWeightMode)
     });
     return history_app.setEvent({
       cx: cx,
@@ -164,7 +236,7 @@ App = React.createClass({
       MatrixNamesNodes: tmpMN
     });
     return this.setState({
-      _Matrix: mx(this.state.MatrixNamesNodes, this.state.Nodes.length)
+      _Matrix: amx(this.state.MatrixNamesNodes, this.state.Paths, this.state.Nodes.length, this.state.calcWeightMode)
     });
   },
   AddPath: function(id) {
@@ -173,7 +245,7 @@ App = React.createClass({
       this.DrawPath(this.state.IdsPath);
       this.state.MatrixNamesNodes.push(this.state.IdsPath);
       this.setState({
-        _Matrix: mx(this.state.MatrixNamesNodes, this.state.Nodes.length)
+        _Matrix: amx(this.state.MatrixNamesNodes, this.state.Paths, this.state.Nodes.length, this.state.calcWeightMode)
       });
       return this.setState({
         IdsPath: []
@@ -181,7 +253,7 @@ App = React.createClass({
     }
   },
   DrawPath: function(ids) {
-    var coords, cx, cy, i, j, k, len, len1, m, str;
+    var __xy, _xy, coords, cx, cy, i, j, k, len, len1, len2, m, n, ref, self, str;
     coords = [];
     str = "M";
     if (ids[0] === ids[1]) {
@@ -212,7 +284,50 @@ App = React.createClass({
     history_app.setEvent({
       d: str
     }, "AddPath");
-    return this.state.Paths.push(str);
+    _xy = {
+      x: 0,
+      y: 0
+    };
+    __xy = {
+      x: 0,
+      y: 0
+    };
+    ref = this.state.Nodes;
+    for (n = 0, len2 = ref.length; n < len2; n++) {
+      i = ref[n];
+      if (ids[0] === i.id) {
+        _xy.x = i.cx;
+        _xy.y = i.cy;
+      }
+      if (ids[1] === i.id) {
+        __xy.x = i.cx;
+        __xy.y = i.cy;
+      }
+    }
+    self = this;
+    return this.state.Paths.push({
+      d: str,
+      coords1: {
+        x: _xy.x,
+        y: _xy.y
+      },
+      coords2: {
+        x: __xy.x,
+        y: __xy.y
+      },
+      weight: getWeight([
+        {
+          x: _xy.x,
+          y: _xy.y
+        }, {
+          x: __xy.x,
+          y: __xy.y
+        }
+      ]),
+      color: "#000",
+      fill: self.state.colorNodes,
+      id: ids[0] + "." + ids[1]
+    });
   },
   deletingModeActive: function() {
     var i, k, len, ref, results;
@@ -274,6 +389,41 @@ App = React.createClass({
         });
       };
     })(this));
+    ee.on("ChangeCalcWeightPathsMode", (function(_this) {
+      return function(data) {
+        _this.setState({
+          calcWeightMode: data.data
+        });
+        return _this.setState({
+          _Matrix: amx(_this.state.MatrixNamesNodes, _this.state.Paths, _this.state.Nodes.length, data.data)
+        });
+      };
+    })(this));
+    ee.on("AddItemMapMode", (function(_this) {
+      return function(data) {
+        var i, j, k, len, ref, results, tmp;
+        _this.setState({
+          addItemMapMode: data.data
+        });
+        if (!data.data) {
+          ref = _this.state.Nodes;
+          results = [];
+          for (j = k = 0, len = ref.length; k < len; j = ++k) {
+            i = ref[j];
+            if (i.color === "#FF0018") {
+              tmp = _this.state.Nodes;
+              tmp[j].color = _this.state.colorNodes;
+              results.push(_this.setState({
+                Nodes: tmp
+              }));
+            } else {
+              results.push(void 0);
+            }
+          }
+          return results;
+        }
+      };
+    })(this));
     return ee.on('changeHistory', (function(_this) {
       return function(data) {
         return _this.setState({
@@ -281,6 +431,13 @@ App = React.createClass({
         });
       };
     })(this));
+  },
+  getTimeWorkAlg: function(f) {
+    var time;
+    time = performance.now();
+    f(get_graph(this.state.MatrixNamesNodes, this.state.Paths), this.state.STARTNode);
+    time = performance.now() - time;
+    return time;
   },
   render: function() {
     return React.createElement("div", {
@@ -295,11 +452,20 @@ App = React.createClass({
           return _this.handleClick(e);
         };
       })(this))
-    }, React.createElement("desc", null, "Created with Daniil(den50)"), React.createElement("defs", null), this.state.Paths.map(function(i) {
-      return React.createElement(Path, {
-        "d": i
-      });
-    }), this.state.Nodes.map((function(_this) {
+    }, React.createElement("desc", null, "Created with Daniil(https:\x2F\x2Fgithub.com\x2Fden50)"), React.createElement("defs", null), this.state.Paths.map((function(_this) {
+      return function(i) {
+        return React.createElement(Path, {
+          "d": i.d,
+          "_xy": i.coords1,
+          "__xy": i.coords2,
+          "weight": i.weight,
+          "fill": i.fill,
+          "CalcWeightMode": _this.state.calcWeightMode,
+          "id": i.id,
+          "color": i.color
+        });
+      };
+    })(this)), this.state.Nodes.map((function(_this) {
       return function(i) {
         return React.createElement(Node, {
           "cx": i.cx,
@@ -313,7 +479,16 @@ App = React.createClass({
     })(this))), React.createElement(Configs, {
       "matrix": this.state._Matrix,
       "history": this.state.history_app,
-      "key": "Configs"
+      "database": {
+        nodes: this.state.Nodes,
+        paths: this.state.Paths
+      },
+      "maps": this.state.maps,
+      "dataAlg": (this.state.MatrixNamesNodes.length !== 0 && this.state.Paths.length !== 0 && this.state.STARTNode.length !== 0 ? {
+        obj: dejkstra(get_graph(this.state.MatrixNamesNodes, this.state.Paths), this.state.STARTNode),
+        type_algorithm: "dejkstra",
+        time: this.getTimeWorkAlg(dejkstra)
+      } : void 0)
     }));
   }
 });
@@ -321,9 +496,14 @@ App = React.createClass({
 module.exports = App;
 
 
+/*
+copyright; Daniil Shenyagin, 2018
+ */
 
-},{"./config/classes/Configs":3,"./config/modules/history.module":9,"./config/modules/matrix.fn":10,"./figures/Node":11,"./figures/Path":12,"./global/Events":13,"react":"react"}],3:[function(require,module,exports){
-var COLORS, Colors, Configs, History, Matrix, Mods, RadiusChanger, React, ee;
+
+
+},{"./config/classes/Configs":3,"./config/modules/adjacency_matrix.fn":9,"./config/modules/calcWeightPaths.fn":10,"./config/modules/dejkstra.algorithm.fn":11,"./config/modules/get_graph":12,"./config/modules/history.module":13,"./figures/Node":14,"./figures/Path":15,"./global/Events":16,"react":"react"}],3:[function(require,module,exports){
+var COLORS, Colors, Configs, Info, Matrix, Mods, RadiusChanger, React, dejkstra, ee;
 
 React = require('react');
 
@@ -335,11 +515,13 @@ Matrix = require('./matrix.class');
 
 RadiusChanger = require("./RadiusChanger");
 
-History = require('./history.class');
+Info = require('./info.class');
 
 Mods = require("./mods.class");
 
-COLORS = ["#2e9f5c", "#47356C", "#FF0018", "#0DF6FF", "#440BDB", "#FFAA0D"];
+dejkstra = require("../modules/dejkstra.algorithm.fn");
+
+COLORS = ["#2e9f5c", "#2866F7", "#C9283E", "#0DF6FF", "#023852", ["#FFAA0D", "#2B9483", "#F53855"]];
 
 Configs = React.createClass({
   displayName: 'Configs',
@@ -409,10 +591,15 @@ Configs = React.createClass({
     }), React.createElement("hr", null), React.createElement(Mods, null), React.createElement("hr", null), React.createElement(Matrix, {
       "matrix": this.props.matrix,
       "key": "Matrix"
-    }), React.createElement("hr", null), React.createElement(History, {
-      "data": this.props.history,
-      "key": "History"
-    })));
+    }), React.createElement("hr", null), React.createElement(Info, {
+      "history": this.props.history,
+      "key": "History",
+      "database": this.props.database,
+      "maps": this.props.maps,
+      "dataAlg": this.props.dataAlg
+    }), React.createElement("p", {
+      "className": "copyright_configs"
+    }, "©Daniil Shenyagin, 2018")));
   }
 });
 
@@ -420,7 +607,7 @@ module.exports = Configs;
 
 
 
-},{"../../global/Events":13,"./RadiusChanger":4,"./colors":5,"./history.class":6,"./matrix.class":7,"./mods.class":8,"react":"react"}],4:[function(require,module,exports){
+},{"../../global/Events":16,"../modules/dejkstra.algorithm.fn":11,"./RadiusChanger":4,"./colors":5,"./info.class":6,"./matrix.class":7,"./mods.class":8,"react":"react"}],4:[function(require,module,exports){
 var RadiusChanger, React, ee;
 
 React = require('react');
@@ -481,7 +668,7 @@ module.exports = RadiusChanger;
 
 
 
-},{"../../global/Events":13,"react":"react"}],5:[function(require,module,exports){
+},{"../../global/Events":16,"react":"react"}],5:[function(require,module,exports){
 var Colors, React;
 
 React = require('react');
@@ -498,14 +685,25 @@ Colors = React.createClass({
       "id": "span_switch_color"
     }, "Switch color nodes:"), React.createElement("br", null), this.props.colors.map((function(_this) {
       return function(i, j) {
-        return React.createElement("div", {
-          "style": {
-            backgroundColor: i.color
-          },
-          "className": (i.active ? "color_item active" : "color_item"),
-          "onClick": _this.props.onChange.bind(null, i.id),
-          "key": "Color" + j
-        });
+        if (typeof i.color === "string") {
+          return React.createElement("div", {
+            "style": {
+              backgroundColor: i.color
+            },
+            "className": (i.active ? "color_item active" : "color_item"),
+            "onClick": _this.props.onChange.bind(null, i.id),
+            "key": "Color" + j
+          });
+        } else {
+          return React.createElement("div", {
+            "style": {
+              backgroundColor: i.color[0]
+            },
+            "className": (i.active ? "color_item active" : "color_item"),
+            "onClick": _this.props.onChange.bind(null, i.id),
+            "key": "Color" + j
+          });
+        }
       };
     })(this)));
   }
@@ -516,54 +714,188 @@ module.exports = Colors;
 
 
 },{"react":"react"}],6:[function(require,module,exports){
-var History, React;
+var Info, React, ee;
 
 React = require('react');
 
-History = React.createClass({
-  displayName: "History",
+ee = require("../../global/Events");
+
+Info = React.createClass({
+  displayName: "Info",
+  getInitialState: function() {
+    return {
+      itemNow: "history",
+      dataAlg: {}
+    };
+  },
+  switchItem: function(obj) {
+    var i, k, len, tmp;
+    tmp = obj.e.target.classList.value.split(' ');
+    for (k = 0, len = tmp.length; k < len; k++) {
+      i = tmp[k];
+      if (i !== "IconActionGold") {
+        continue;
+      } else {
+        tmp.push("IconActionGold");
+        break;
+      }
+    }
+    obj.e.target.classList.value = tmp.join(" ");
+    if (this.state.itemNow !== obj.type) {
+      return this.setState({
+        itemNow: obj.type
+      });
+    }
+  },
+  componentWillMount: function() {
+    return ee.on("switchAlgorithm", (function(_this) {
+      return function(data) {
+        _this.state.dataAlg.type = data.type;
+        return _this.setState({
+          itemNow: "map"
+        });
+      };
+    })(this));
+  },
   render: function() {
     return React.createElement("div", {
+      "className": "wrapInfo"
+    }, React.createElement("i", {
+      "className": (this.state.itemNow === "history" ? "fa fa-history itemInfoIcon IconActionGold" : "fa fa-history itemInfoIcon"),
+      "title": "history",
+      "onClick": ((function(_this) {
+        return function(e) {
+          return _this.switchItem({
+            type: "history",
+            e: e
+          });
+        };
+      })(this))
+    }), React.createElement("i", {
+      "className": (this.state.itemNow === "database" ? "fa fa-database itemInfoIcon IconActionGold" : "fa fa-database itemInfoIcon"),
+      "title": "database",
+      "onClick": ((function(_this) {
+        return function(e) {
+          return _this.switchItem({
+            type: "database",
+            e: e
+          });
+        };
+      })(this))
+    }), React.createElement("i", {
+      "className": (this.state.itemNow === "map" ? "fa fa-map itemInfoIcon IconActionGold" : "fa fa-map itemInfoIcon"),
+      "title": "map",
+      "onClick": ((function(_this) {
+        return function(e) {
+          return _this.switchItem({
+            type: "map",
+            e: e
+          });
+        };
+      })(this))
+    }), (this.state.itemNow === "history" ? React.createElement("div", {
       "className": "wrap_history"
     }, React.createElement("div", {
       "className": "history"
-    }, this.props.data.map(function(i, j) {
+    }, this.props.history.map(function(i, j) {
       return React.createElement("div", {
         "className": "history_item",
         "key": "item" + j
       }, i.type, ": ", i.MainData);
-    })));
+    }))) : this.state.itemNow === "database" ? React.createElement("div", null, React.createElement("span", null, "Count nodes: ", this.props.database.nodes.length), React.createElement("br", null), React.createElement("span", null, "Count paths: ", this.props.database.paths.length)) : this.state.itemNow === "map" ? this.props.dataAlg != null ? React.createElement("div", {
+      "className": "wrapMap"
+    }, React.createElement("span", null, "Type_algorithm: ", React.createElement("span", {
+      "className": "klaster"
+    }, this.props.dataAlg.type_algorithm)), React.createElement("br", null), React.createElement("span", null, "Time work algorithm: ", React.createElement("span", {
+      "className": "klaster"
+    }, this.props.dataAlg.time)), React.createElement("div", {
+      "className": "wrapMapItem"
+    }, Object.keys(this.props.dataAlg.obj).map((function(_this) {
+      return function(i, j) {
+        return React.createElement("div", null, React.createElement("span", null, i, ": ", _this.props.dataAlg.obj[i]), React.createElement("br", null));
+      };
+    })(this)))) : React.createElement("p", null, "ooooooh=)MAP IS EMPTY)") : void 0));
   }
 });
 
-module.exports = History;
+module.exports = Info;
 
 
 
-},{"react":"react"}],7:[function(require,module,exports){
+},{"../../global/Events":16,"react":"react"}],7:[function(require,module,exports){
 var Matrix, React;
 
 React = require('react');
 
 Matrix = React.createClass({
   displayName: "Matrix",
+  getInitialState: function() {
+    return {
+      matrixNow: "AdjecencyMatrix"
+    };
+  },
+  switchMatrix: function(obj) {
+    var i, k, len, tmp;
+    tmp = obj.e.target.classList.value.split(' ');
+    for (k = 0, len = tmp.length; k < len; k++) {
+      i = tmp[k];
+      if (i !== "IconAction") {
+        continue;
+      } else {
+        tmp.push("IconAction");
+        break;
+      }
+    }
+    obj.e.target.classList.value = tmp.join(" ");
+    if (this.state.matrixNow !== obj.type) {
+      return this.setState({
+        matrixNow: obj.type
+      });
+    }
+  },
   render: function() {
     return React.createElement("div", {
       "className": "wrapMatrix"
     }, React.createElement("i", {
-      "class": "fa fa-th",
-      "aria-hidden": "true"
-    }), React.createElement("table", {
-      "className": "Matrix"
+      "className": (this.state.matrixNow === "AdjecencyMatrix" ? "fa far fa-table switchMatrix IconAction" : "fa far fa-table switchMatrix"),
+      "title": "AdjecencyMatrix",
+      "onClick": ((function(_this) {
+        return function(e) {
+          return _this.switchMatrix({
+            type: "AdjecencyMatrix",
+            e: e
+          });
+        };
+      })(this))
+    }), React.createElement("i", {
+      "className": (this.state.matrixNow === "IncindenceMatrix" ? "fa far fa-table switchMatrix IconAction" : "fa far fa-table switchMatrix"),
+      "title": "IncindenceMatrix",
+      "onClick": ((function(_this) {
+        return function(e) {
+          return _this.switchMatrix({
+            type: "IncindenceMatrix",
+            e: e
+          });
+        };
+      })(this))
+    }), React.createElement("br", null), (this.state.matrixNow === "AdjecencyMatrix" ? this.props.matrix.length !== 0 ? React.createElement("table", {
+      "className": "AdjecancyMatrix"
     }, this.props.matrix.map(function(i, l) {
       return React.createElement("tr", {
         "key": "tr" + l
       }, i.map(function(j, p) {
-        return React.createElement("td", {
-          "key": "td" + p
-        }, j);
+        if (j === 0) {
+          return React.createElement("td", {
+            "className": "cgray50",
+            "key": "td" + p
+          }, j);
+        } else {
+          return React.createElement("td", {
+            "key": "td" + p
+          }, j);
+        }
       }));
-    })));
+    })) : React.createElement("span", null, "Adjecency matrix is empty", React.createElement("br", null), "Сlick into the empty space...") : this.state.matrixNow === "IncindenceMatrix" ? React.createElement("span", null, "Incindence matrix is empty", React.createElement("br", null), "Сlick into the empty space...") : void 0));
   }
 });
 
@@ -582,6 +914,12 @@ history_app = require("../modules/history.module");
 
 Deleting = React.createClass({
   displayName: "Mods",
+  getInitialState: function() {
+    return {
+      algNow: "dejkstra",
+      algMode: false
+    };
+  },
   handleChangeDeleting: function(e) {
     history_app.setEvent({
       deletingMode: e.target.checked
@@ -598,13 +936,34 @@ Deleting = React.createClass({
       data: e.target.checked
     });
   },
+  handleChangeModeCalcWeight: function(e) {
+    history_app.setEvent({
+      data: e.target.checked
+    }, "calcWeightPathsMode");
+    return ee.emit('ChangeCalcWeightPathsMode', {
+      data: e.target.checked
+    });
+  },
+  handleAddItemMapMode: function(e) {
+    history_app.setEvent({
+      data: e.target.checked
+    }, "addItemMapMode");
+    ee.emit('AddItemMapMode', {
+      data: e.target.checked
+    });
+    return this.setState({
+      algMode: e.target.checked
+    });
+  },
+  changeSwitchAlgorithm: function(e, data) {
+    return ee.emit("switchAlgorithm", {
+      data: data.type
+    });
+  },
   render: function() {
     return React.createElement("div", {
       "className": "wrapMods"
-    }, React.createElement("i", {
-      "class": "fa fa-sliders",
-      "aria-hidden": "true"
-    }), React.createElement("div", {
+    }, React.createElement("div", {
       "className": "wrapDeleting"
     }, React.createElement("div", {
       "className": "labelFor"
@@ -614,7 +973,7 @@ Deleting = React.createClass({
       "type": "checkbox",
       "name": "toggle2",
       "className": "mobileToggle",
-      "id": "toggle2",
+      "id": "toggle1",
       "onChange": ((function(_this) {
         return function(e) {
           return _this.handleChangeDeleting(e);
@@ -636,7 +995,67 @@ Deleting = React.createClass({
           return _this.handleChangeModeNodesNumbering(e);
         };
       })(this))
-    }))));
+    }))), React.createElement("div", {
+      "className": "wrapModeCalcWeight"
+    }, React.createElement("div", {
+      "className": "labelFor"
+    }, React.createElement("span", null, "CalcWeightPathMode: ")), React.createElement("div", {
+      "className": "toggleWrapper"
+    }, React.createElement("input", {
+      "type": "checkbox",
+      "name": "toggle2",
+      "className": "mobileToggle",
+      "id": "toggle3",
+      "onChange": ((function(_this) {
+        return function(e) {
+          return _this.handleChangeModeCalcWeight(e);
+        };
+      })(this))
+    }))), React.createElement("div", {
+      "className": "wrapAddItemMapMode"
+    }, React.createElement("div", {
+      "className": "labelFor"
+    }, React.createElement("span", null, "AddItemMapMode: ")), React.createElement("div", {
+      "className": "toggleWrapper"
+    }, React.createElement("input", {
+      "type": "checkbox",
+      "name": "toggle2",
+      "className": "mobileToggle",
+      "id": "toggle4",
+      "onChange": ((function(_this) {
+        return function(e) {
+          return _this.handleAddItemMapMode(e);
+        };
+      })(this))
+    })), (this.state.algMode ? React.createElement("div", {
+      "className": "switchAlgorithm"
+    }, React.createElement("input", {
+      "type": "radio",
+      "name": "algorithm",
+      "id": "dejkstra",
+      "onChange": ((function(_this) {
+        return function(e) {
+          return _this.changeSwitchAlgorithm(e, {
+            type: "dejkstra"
+          });
+        };
+      })(this))
+    }), React.createElement("label", {
+      "for": "dejkstra"
+    }, "Dejkstra Algorithm"), React.createElement("br", null), React.createElement("input", {
+      "type": "radio",
+      "name": "algorithm",
+      "id": "height",
+      "onChange": ((function(_this) {
+        return function(e) {
+          return _this.changeSwitchAlgorithm(e, {
+            type: "height"
+          });
+        };
+      })(this))
+    }), React.createElement("label", {
+      "for": "height"
+    }, "Height Algorithm")) : void 0)));
   }
 });
 
@@ -644,7 +1063,257 @@ module.exports = Deleting;
 
 
 
-},{"../../global/Events":13,"../modules/history.module":9,"react":"react"}],9:[function(require,module,exports){
+},{"../../global/Events":16,"../modules/history.module":13,"react":"react"}],9:[function(require,module,exports){
+
+/*
+matrix = [
+	   0  1  2  3
+	0 [1, 1, 0, 1]
+	1 [1, 0, 0, 1]
+	2 [0, 1, 0, 1]
+	3 [1, 1, 1, 0]
+]
+
+tmp_all = ""
+	for i in arr
+		tmp_all+= i[0]
+		tmp_all+= i[1]
+	console.log tmp_all
+	arr_ints = tmp_all.match /\d+/g
+	for i, j in arr_ints
+		arr_ints[j] = +i
+ */
+var getMatrix;
+
+getMatrix = function(arr, paths, n, WeightMode) {
+  var Mx, RevArr, i, j, k, l, len, len1, len2, len3, len4, len5, len6, m, o, p, q, r, ref, ref1, ref2, ref3, ref4, ref5, s, t, tmpArr, tmpObj, u;
+  if (n > 0) {
+    Mx = [];
+    tmpObj = {};
+    for (i = k = 0, ref = n - 1; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
+      tmpObj["circle" + i] = {};
+      for (q = l = 0, ref1 = n - 1; 0 <= ref1 ? l <= ref1 : l >= ref1; q = 0 <= ref1 ? ++l : --l) {
+        tmpObj["circle" + i]["circle" + q] = 0;
+      }
+    }
+    for (j = m = 0, len = arr.length; m < len; j = ++m) {
+      i = arr[j];
+      ref2 = Object.keys(tmpObj);
+      for (o = 0, len1 = ref2.length; o < len1; o++) {
+        q = ref2[o];
+        if (i[0] === q) {
+          tmpObj[q][i[1]] = WeightMode ? Math.round(paths[j].weight) : 1;
+        }
+      }
+    }
+    RevArr = [];
+    for (p = 0, len2 = arr.length; p < len2; p++) {
+      i = arr[p];
+      RevArr.push([i[1], i[0]]);
+    }
+    for (j = r = 0, len3 = RevArr.length; r < len3; j = ++r) {
+      i = RevArr[j];
+      ref3 = Object.keys(tmpObj);
+      for (s = 0, len4 = ref3.length; s < len4; s++) {
+        q = ref3[s];
+        if (i[0] === q) {
+          tmpObj[q][i[1]] = WeightMode ? Math.round(paths[j].weight) : 1;
+        }
+      }
+    }
+    ref4 = Object.keys(tmpObj);
+    for (t = 0, len5 = ref4.length; t < len5; t++) {
+      i = ref4[t];
+      tmpArr = [];
+      ref5 = Object.keys(tmpObj[i]);
+      for (u = 0, len6 = ref5.length; u < len6; u++) {
+        j = ref5[u];
+        tmpArr.push(tmpObj[i][j]);
+      }
+      Mx.push(tmpArr);
+    }
+    return Mx;
+  } else {
+    return [];
+  }
+};
+
+module.exports = getMatrix;
+
+
+
+},{}],10:[function(require,module,exports){
+
+/*
+	coords = [
+		{
+			d: "M 365, 171L 123, 66Z", 
+			coords1: {x: 365, y: 171}, 
+			coords2: {x: 123, y: 66}
+		}
+	]
+ */
+var getWeight;
+
+getWeight = function(coords) {
+  var cat1, cat2, coords1, coords2, hypotenuse;
+  coords1 = {
+    x: coords[0].x,
+    y: coords[0].y
+  };
+  coords2 = {
+    x: coords[1].x,
+    y: coords[1].y
+  };
+  if (coords1.x === coords2.x && coords1.y === coords2.y) {
+    return 12;
+  } else {
+    cat1 = Math.abs(coords1.x - coords2.x);
+    cat2 = Math.abs(coords1.y - coords2.y);
+    hypotenuse = Math.sqrt((Math.pow(cat1, 2)) + (Math.pow(cat2, 2)));
+    return (Math.round(hypotenuse)) / 20;
+  }
+};
+
+module.exports = getWeight;
+
+
+
+},{}],11:[function(require,module,exports){
+
+/*
+Path = {
+	color:"#000"
+	coords1: {…}
+	coords2: {…}
+	d: "M 366, 115L 896, 101Z"
+	fill: "#2e9f5c"
+	id: "circle0.circle1"
+	weight: 26.5
+}
+
+namesArr = [
+	["circle3", "circle0"]
+	["circle0", "circle2"]
+	["circle2", "circle1"]
+	["circle3", "circle1"]
+	["circle4", "circle1"]
+	["circle4", "circle0"]
+]
+
+Paths = [
+	{
+		id: "circle3.circle0"
+		weight: 5
+	},
+	{
+		id: "circle0.circle2"
+		weight: 10
+	},
+	{
+		id: "circle2.circle1"
+		weight: 7
+	},
+	{
+		id: "circle3.circle1"
+		weight: 4
+	}, 
+	{
+		id: "circle4.circle1"
+		weight: 6
+	},
+	{
+		id: "circle4.circle0"
+		weight: 8
+	}
+]
+
+namesArr = [
+	["circle3", "circle0"]
+	["circle0", "circle2"]
+	["circle2", "circle1"]
+	["circle3", "circle1"]
+	["circle4", "circle1"]
+	["circle4", "circle0"]
+]
+ */
+var getMapDejkstra,
+  indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+getMapDejkstra = function(graph, _start, p, u, d) {
+  var i, j, len, len1, min_v, min_x, ref, ref1, start, x;
+  if (p == null) {
+    p = {};
+  }
+  if (u == null) {
+    u = [];
+  }
+  if (d == null) {
+    d = {};
+  }
+  start = _start;
+  if (Object.keys(p).length === 0) {
+    p[start] = 0;
+  }
+  ref = Object.keys(graph[start]);
+  for (i = 0, len = ref.length; i < len; i++) {
+    x = ref[i];
+    if ((indexOf.call(u, x) < 0) && x !== start) {
+      if (indexOf.call(Object.keys(p), x) < 0 || (graph[start][x] + p[start]) < p[x]) {
+        p[x] = graph[start][x] + p[start];
+      }
+    }
+  }
+  u.push(start);
+  min_v = 0;
+  min_x = null;
+  ref1 = Object.keys(p);
+  for (j = 0, len1 = ref1.length; j < len1; j++) {
+    x = ref1[j];
+    if ((p[x] < min_v || min_v === 0) && indexOf.call(u, x) < 0) {
+      min_x = x;
+      min_v = p[x];
+    }
+  }
+  if ((u.length < Object.keys(graph).length) && min_x) {
+    return getMapDejkstra(graph, min_x, p, u);
+  } else {
+    return p;
+  }
+};
+
+module.exports = getMapDejkstra;
+
+
+
+},{}],12:[function(require,module,exports){
+module.exports = function(_arrNames, _paths) {
+  var arrNames, i, j, k, l, len, len1, len2, m, obj, paths, tmp;
+  arrNames = _arrNames;
+  paths = _paths;
+  obj = {};
+  for (j = k = 0, len = arrNames.length; k < len; j = ++k) {
+    i = arrNames[j];
+    obj[i[0]] = obj[i[0]] || {};
+    obj[i[0]][i[1]] = paths[j].weight;
+  }
+  for (j = l = 0, len1 = arrNames.length; l < len1; j = ++l) {
+    i = arrNames[j];
+    tmp = arrNames[j][0];
+    arrNames[j][0] = arrNames[j][1];
+    arrNames[j][1] = tmp;
+  }
+  for (j = m = 0, len2 = arrNames.length; m < len2; j = ++m) {
+    i = arrNames[j];
+    obj[i[0]] = obj[i[0]] || {};
+    obj[i[0]][i[1]] = paths[j].weight;
+  }
+  return obj;
+};
+
+
+
+},{}],13:[function(require,module,exports){
 var History_class, ee, history_app;
 
 ee = require("../../global/Events");
@@ -694,6 +1363,12 @@ History_class = (function() {
     if (type_event === "modeNodesNumbering") {
       tmp["MainData"] = "" + obj.modeNodesNumbering;
     }
+    if (type_event === "calcWeightPathsMode") {
+      tmp["MainData"] = "" + obj.data;
+    }
+    if (type_event === "addItemMapMode") {
+      tmp["MainData"] = "" + obj.data;
+    }
     tmp["date"] = strDate;
     if (obj.id != null) {
       tmp['id'] = obj.id;
@@ -718,86 +1393,7 @@ module.exports = history_app;
 
 
 
-},{"../../global/Events":13}],10:[function(require,module,exports){
-
-/*
-matrix = [
-	   0  1  2  3
-	0 [1, 1, 0, 1]
-	1 [1, 0, 0, 1]
-	2 [0, 1, 0, 1]
-	3 [1, 1, 1, 0]
-]
-
-tmp_all = ""
-	for i in arr
-		tmp_all+= i[0]
-		tmp_all+= i[1]
-	console.log tmp_all
-	arr_ints = tmp_all.match /\d+/g
-	for i, j in arr_ints
-		arr_ints[j] = +i
- */
-var getMatrix;
-
-getMatrix = function(arr, n) {
-  var Mx, RevArr, i, j, k, l, len, len1, len2, len3, len4, len5, len6, m, o, p, q, r, ref, ref1, ref2, ref3, ref4, ref5, s, t, tmpArr, tmpObj, u;
-  if (n > 0) {
-    Mx = [];
-    tmpObj = {};
-    for (i = k = 0, ref = n - 1; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
-      tmpObj["circle" + i] = {};
-      for (q = l = 0, ref1 = n - 1; 0 <= ref1 ? l <= ref1 : l >= ref1; q = 0 <= ref1 ? ++l : --l) {
-        tmpObj["circle" + i]["circle" + q] = 0;
-      }
-    }
-    for (j = m = 0, len = arr.length; m < len; j = ++m) {
-      i = arr[j];
-      ref2 = Object.keys(tmpObj);
-      for (o = 0, len1 = ref2.length; o < len1; o++) {
-        q = ref2[o];
-        if (i[0] === q) {
-          tmpObj[q][i[1]] = 1;
-        }
-      }
-    }
-    RevArr = [];
-    for (p = 0, len2 = arr.length; p < len2; p++) {
-      i = arr[p];
-      RevArr.push([i[1], i[0]]);
-    }
-    for (j = r = 0, len3 = RevArr.length; r < len3; j = ++r) {
-      i = RevArr[j];
-      ref3 = Object.keys(tmpObj);
-      for (s = 0, len4 = ref3.length; s < len4; s++) {
-        q = ref3[s];
-        if (i[0] === q) {
-          tmpObj[q][i[1]] = 1;
-        }
-      }
-    }
-    ref4 = Object.keys(tmpObj);
-    for (t = 0, len5 = ref4.length; t < len5; t++) {
-      i = ref4[t];
-      tmpArr = [];
-      ref5 = Object.keys(tmpObj[i]);
-      for (u = 0, len6 = ref5.length; u < len6; u++) {
-        j = ref5[u];
-        tmpArr.push(tmpObj[i][j]);
-      }
-      Mx.push(tmpArr);
-    }
-    return Mx;
-  } else {
-    return [];
-  }
-};
-
-module.exports = getMatrix;
-
-
-
-},{}],11:[function(require,module,exports){
+},{"../../global/Events":16}],14:[function(require,module,exports){
 var Node, React;
 
 React = require('react');
@@ -823,7 +1419,7 @@ Node = React.createClass({
         "dy": ".6em",
         "fontFamily": "sans-serif",
         "fontSize": "17px"
-      }, (this.props.id.match(/\d+/g)[0])));
+      }, "" + (+this.props.id.match(/\d+/g)[0])));
     } else {
       return React.createElement("circle", {
         "cx": this.props.cx,
@@ -840,7 +1436,7 @@ module.exports = Node;
 
 
 
-},{"react":"react"}],12:[function(require,module,exports){
+},{"react":"react"}],15:[function(require,module,exports){
 var Path, React;
 
 React = require('react');
@@ -848,14 +1444,41 @@ React = require('react');
 Path = React.createClass({
   displayName: 'Path',
   render: function() {
-    return React.createElement("path", {
-      "d": this.props.d,
-      "fill": "transparent",
-      "stroke": "black",
-      "style": {
-        strokeWidth: 2
-      }
-    });
+    if (this.props.CalcWeightMode) {
+      return React.createElement("g", null, React.createElement("path", {
+        "d": this.props.d,
+        "fill": "transparent",
+        "stroke": "black",
+        "style": {
+          strokeWidth: 2
+        }
+      }), React.createElement("rect", {
+        "x": (this.props._xy.x !== this.props.__xy.x && this.props._xy.y !== this.props.__xy.y ? Math.min(this.props._xy.x, this.props.__xy.x) + (Math.abs(this.props._xy.x - this.props.__xy.x)) / 2 - 23.5 : this.props._xy.x - 29.5),
+        "y": (this.props._xy.x !== this.props.__xy.x && this.props._xy.y !== this.props.__xy.y ? Math.min(this.props._xy.y, this.props.__xy.y) + (Math.abs(this.props._xy.y - this.props.__xy.y)) / 2 - 16 : this.props._xy.y - 130),
+        "width": "60",
+        "height": "30",
+        "fill": this.props.fill,
+        "widthStroke": "5",
+        "stroke": "#333"
+      }), React.createElement("text", {
+        "x": (this.props._xy.x !== this.props.__xy.x && this.props._xy.y !== this.props.__xy.y ? Math.min(this.props._xy.x, this.props.__xy.x) + (Math.abs(this.props._xy.x - this.props.__xy.x)) / 2 - 15 : this.props._xy.x - 10),
+        "y": (this.props._xy.x !== this.props.__xy.x && this.props._xy.y !== this.props.__xy.y ? Math.min(this.props._xy.y, this.props.__xy.y) + (Math.abs(this.props._xy.y - this.props.__xy.y)) / 2 - 5 : this.props._xy.y - 120),
+        "fill": "#fff",
+        "dy": ".6em",
+        "fontFamily": "sans-serif",
+        "fontSize": "17px",
+        "className": "weightPaths"
+      }, "" + this.props.weight));
+    } else {
+      return React.createElement("path", {
+        "d": this.props.d,
+        "fill": "transparent",
+        "stroke": this.props.color,
+        "style": {
+          strokeWidth: 2
+        }
+      });
+    }
   }
 });
 
@@ -863,7 +1486,7 @@ module.exports = Path;
 
 
 
-},{"react":"react"}],13:[function(require,module,exports){
+},{"react":"react"}],16:[function(require,module,exports){
 var EventEmitter, ee;
 
 EventEmitter = require("events").EventEmitter;
@@ -874,7 +1497,7 @@ module.exports = ee;
 
 
 
-},{"events":14}],14:[function(require,module,exports){
+},{"events":17}],17:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
