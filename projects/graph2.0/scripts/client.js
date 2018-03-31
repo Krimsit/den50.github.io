@@ -1,16 +1,18 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var App, React;
+var App, React, a;
 
 React = require('react');
 
 App = require('./app');
+
+a = 10;
 
 React.render(React.createElement(App, null), document.getElementById('app'));
 
 
 
 },{"./app":2,"react":"react"}],2:[function(require,module,exports){
-var App, Configs, Node, Path, React, amx, ee, getWeight, history_app, switcher;
+var App, Configs, Node, Path, React, amx, ee, generating_nodes, generating_paths, getWeight, history_app, switcher;
 
 React = require('react');
 
@@ -30,6 +32,10 @@ history_app = require("./config/modules/history.module");
 
 switcher = require("./config/modules/switcher.controller");
 
+generating_nodes = require("./config/modules/generate.fn").get_Nodes_sequence;
+
+generating_paths = require("./config/modules/generate.fn").write_paths;
+
 App = React.createClass({
   displayName: 'App',
   getInitialState: function() {
@@ -40,6 +46,7 @@ App = React.createClass({
       modeNodesNumbering: false,
       calcWeightMode: false,
       addItemMapMode: false,
+      ALGNOW: "dejkstra",
       STARTNode: "",
       history_app: [],
       _Matrix: [],
@@ -65,7 +72,6 @@ App = React.createClass({
           STARTNode: e.target.attributes.id.nodeValue
         });
         switcher.regist(e.target.attributes.id.nodeValue);
-        switcher.init("dejkstra");
         if (this.state.STARTNode === "") {
           ref = this.state.Nodes;
           results = [];
@@ -140,13 +146,14 @@ App = React.createClass({
     this.setState({
       _Matrix: amx(this.state.MatrixNamesNodes, this.state.Paths, this.state.Nodes.length, this.state.calcWeightMode)
     });
-    return history_app.setEvent({
+    history_app.setEvent({
       cx: cx,
       cy: cy,
       id: id,
       color: color,
       r: r
     }, 'AddNode');
+    return switcher.setArrMx(this.state._Matrix);
   },
   DeleteLastNode: function() {
     var tmp;
@@ -328,7 +335,8 @@ App = React.createClass({
       fill: self.state.colorNodes,
       id: ids[0] + "." + ids[1]
     });
-    return switcher.regist(this.state.Paths);
+    switcher.regist(this.state.Paths);
+    return switcher.setArrMx(this.state._Matrix);
   },
   deletingModeActive: function() {
     var i, k, len, ref, results;
@@ -425,13 +433,54 @@ App = React.createClass({
         }
       };
     })(this));
-    return ee.on('changeHistory', (function(_this) {
+    ee.on('changeHistory', (function(_this) {
       return function(data) {
         return _this.setState({
           history_app: data.data
         });
       };
     })(this));
+    ee.on('switchAlgorithm', (function(_this) {
+      return function(data) {
+        _this.setState({
+          ALGNOW: data.type
+        });
+        switcher.setArrMx(_this.state._Matrix);
+        return switcher.init(data.type);
+      };
+    })(this));
+    return ee.on("generate", (function(_this) {
+      return function(data) {
+        return _this.generateGraph(data.data.nodes_count, data.data.paths_count);
+      };
+    })(this));
+  },
+  generateGraph: function(nodes_count, paths_count) {
+    var i, j, k, len, ref;
+    ref = generating_nodes(nodes_count, 30, 30, {
+      width: window.innerWidth * 0.8,
+      height: window.innerHeight
+    });
+    for (j = k = 0, len = ref.length; k < len; j = ++k) {
+      i = ref[j];
+      this.AddNode(i.cx, i.cy, "circle" + j, this.state.colorNodes, 20);
+    }
+    return setTimeout(((function(_this) {
+      return function() {
+        var len1, m, ref1, results;
+        _this.setState({
+          MatrixNamesNodes: generating_paths(paths_count, nodes_count)
+        });
+        switcher.regist(_this.state.MatrixNamesNodes);
+        ref1 = generating_paths(paths_count, nodes_count);
+        results = [];
+        for (m = 0, len1 = ref1.length; m < len1; m++) {
+          i = ref1[m];
+          results.push(_this.DrawPath(i));
+        }
+        return results;
+      };
+    })(this)), 1500);
   },
   render: function() {
     return React.createElement("div", {
@@ -491,7 +540,7 @@ copyright; Daniil Shenyagin, 2018
 
 
 
-},{"./config/classes/Configs":3,"./config/modules/adjacency_matrix.fn":9,"./config/modules/calcWeightPaths.fn":11,"./config/modules/history.module":12,"./config/modules/switcher.controller":13,"./figures/Node":14,"./figures/Path":15,"./global/Events":16,"react":"react"}],3:[function(require,module,exports){
+},{"./config/classes/Configs":3,"./config/modules/adjacency_matrix.fn":9,"./config/modules/calcWeightPaths.fn":13,"./config/modules/generate.fn":14,"./config/modules/history.module":15,"./config/modules/switcher.controller":16,"./figures/Node":17,"./figures/Path":18,"./global/Events":19,"react":"react"}],3:[function(require,module,exports){
 var COLORS, Colors, Configs, Info, Matrix, Mods, RadiusChanger, React, ee;
 
 React = require('react');
@@ -594,7 +643,7 @@ module.exports = Configs;
 
 
 
-},{"../../global/Events":16,"./RadiusChanger":4,"./colors":5,"./info.class":6,"./matrix.class":7,"./mods.class":8,"react":"react"}],4:[function(require,module,exports){
+},{"../../global/Events":19,"./RadiusChanger":4,"./colors":5,"./info.class":6,"./matrix.class":7,"./mods.class":8,"react":"react"}],4:[function(require,module,exports){
 var RadiusChanger, React, ee;
 
 React = require('react');
@@ -655,7 +704,7 @@ module.exports = RadiusChanger;
 
 
 
-},{"../../global/Events":16,"react":"react"}],5:[function(require,module,exports){
+},{"../../global/Events":19,"react":"react"}],5:[function(require,module,exports){
 var Colors, React;
 
 React = require('react');
@@ -714,7 +763,10 @@ Info = React.createClass({
       itemNow: "history",
       typeAlg: "",
       dataAlg: {},
-      timeAlg: 0
+      timeAlg: 0,
+      middleTimeAlg: 0,
+      noTest: 1,
+      dataGenerate: {}
     };
   },
   switchItem: function(obj) {
@@ -736,6 +788,34 @@ Info = React.createClass({
       });
     }
   },
+  getPaths_max: function(n) {
+    var N, i, k, n1, ref;
+    if (n > 3) {
+      n1 = 3;
+      N = 3;
+      for (i = k = 0, ref = n - 4; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
+        N += n1;
+        n1++;
+      }
+      return N;
+    } else {
+      return -1;
+    }
+  },
+  getValGenerate: function(e, obj) {
+    var data;
+    data = this.state.dataGenerate || {};
+    data[obj.type] = e.target.value;
+    return this.setState({
+      dataGenerate: data
+    });
+  },
+  generate_graph: function(e) {
+    ee.emit("generate", {
+      data: this.state.dataGenerate
+    });
+    return console.log(this.state.dataGenerate);
+  },
   componentWillMount: function() {
     return ee.on("sendDataAlgs", (function(_this) {
       return function(data) {
@@ -743,6 +823,22 @@ Info = React.createClass({
           itemNow: "map"
         });
         console.log(data);
+        if (_this.state.typeAlg === data.type) {
+          _this.setState({
+            middleTimeAlg: (_this.state.middleTimeAlg + data.time) / 2
+          });
+        } else {
+          _this.state.middleTimeAlg = 0;
+        }
+        if (_this.state.typeAlg === data.type) {
+          _this.setState({
+            noTest: _this.state.noTest + 1
+          });
+        } else {
+          _this.setState({
+            noTest: 1
+          });
+        }
         _this.setState({
           typeAlg: data.type
         });
@@ -791,6 +887,17 @@ Info = React.createClass({
           });
         };
       })(this))
+    }), React.createElement("i", {
+      "className": (this.state.itemNow === "generate" ? "fa fa-plus itemInfoIcon IconActionGold" : "fa fa-plus itemInfoIcon"),
+      "title": "generate",
+      "onClick": ((function(_this) {
+        return function(e) {
+          return _this.switchItem({
+            type: "generate",
+            e: e
+          });
+        };
+      })(this))
     }), (this.state.itemNow === "history" ? React.createElement("div", {
       "className": "wrap_history"
     }, React.createElement("div", {
@@ -810,13 +917,48 @@ Info = React.createClass({
       "className": "InfoAlg"
     }, "Time work algorithm: ", React.createElement("span", {
       "className": "klaster"
-    }, this.state.timeAlg)), React.createElement("div", {
+    }, this.state.timeAlg)), React.createElement("span", {
+      "className": "InfoAlg"
+    }, "Middle time work algorithm: ", React.createElement("span", {
+      "className": "klaster"
+    }, this.state.middleTimeAlg)), React.createElement("span", {
+      "className": "InfoAlg"
+    }, "Number test algorithm: ", React.createElement("span", {
+      "className": "klaster"
+    }, this.state.noTest)), React.createElement("div", {
       "className": "wrapMapItem"
     }, Object.keys(this.state.dataAlg).map((function(_this) {
       return function(i, j) {
         return React.createElement("div", null, React.createElement("span", null, i, ": ", _this.state.dataAlg[i]), React.createElement("br", null));
       };
-    })(this)))) : React.createElement("p", null, "ooooooh=)MAP IS EMPTY)") : void 0));
+    })(this)))) : React.createElement("p", null, "ooooooh=)MAP IS EMPTY)") : this.state.itemNow === "generate" ? React.createElement("div", null, React.createElement("br", null), React.createElement("label", null, "Nodes_count: ", React.createElement("input", {
+      "type": "number",
+      "title": "nodes_count",
+      "onChange": ((function(_this) {
+        return function(e) {
+          return _this.getValGenerate(e, {
+            type: "nodes_count"
+          });
+        };
+      })(this))
+    })), React.createElement("br", null), React.createElement("label", null, "Paths_count: ", React.createElement("input", {
+      "type": "number",
+      "title": "paths_count",
+      "onChange": ((function(_this) {
+        return function(e) {
+          return _this.getValGenerate(e, {
+            type: "paths_count"
+          });
+        };
+      })(this))
+    })), React.createElement("span", null, "max: ", this.getPaths_max(this.state.dataGenerate.nodes_count)), React.createElement("br", null), React.createElement("button", {
+      "className": "generateBtn",
+      "onClick": ((function(_this) {
+        return function(e) {
+          return _this.generate_graph(e);
+        };
+      })(this))
+    }, "Generate!")) : void 0));
   }
 });
 
@@ -824,7 +966,7 @@ module.exports = Info;
 
 
 
-},{"../../global/Events":16,"react":"react"}],7:[function(require,module,exports){
+},{"../../global/Events":19,"react":"react"}],7:[function(require,module,exports){
 var Matrix, React;
 
 React = require('react');
@@ -959,9 +1101,7 @@ Deleting = React.createClass({
   },
   changeSwitchAlgorithm: function(e, data) {
     return ee.emit("switchAlgorithm", {
-      data: {
-        type: data.type
-      }
+      type: data.type
     });
   },
   render: function() {
@@ -1033,6 +1173,8 @@ Deleting = React.createClass({
       })(this))
     })), (this.state.algMode ? React.createElement("div", {
       "className": "switchAlgorithm fr"
+    }, React.createElement("label", {
+      "for": "dejkstra"
     }, React.createElement("input", {
       "type": "radio",
       "name": "algorithm",
@@ -1044,22 +1186,33 @@ Deleting = React.createClass({
           });
         };
       })(this))
-    }), React.createElement("label", {
-      "for": "dejkstra"
-    }, "Dejkstra Algorithm"), React.createElement("br", null), React.createElement("input", {
+    }), "\t\t\t\t\t\t\tDejkstra\'s Algorithm"), React.createElement("br", null), React.createElement("label", {
+      "for": "floyda"
+    }, React.createElement("input", {
       "type": "radio",
       "name": "algorithm",
-      "id": "height",
+      "id": "floyda",
       "onChange": ((function(_this) {
         return function(e) {
           return _this.changeSwitchAlgorithm(e, {
-            type: "height"
+            type: "floyda"
           });
         };
       })(this))
-    }), React.createElement("label", {
-      "for": "height"
-    }, "Height Algorithm")) : void 0)));
+    }), "\t\t\t\t\t\t\tFloyd\'s Algorithm"), React.createElement("label", {
+      "for": "forda"
+    }, React.createElement("input", {
+      "type": "radio",
+      "name": "algorithm",
+      "id": "forda",
+      "onChange": ((function(_this) {
+        return function(e) {
+          return _this.changeSwitchAlgorithm(e, {
+            type: "forda"
+          });
+        };
+      })(this))
+    }), "\t\t\t\t\t\t\tFord\'s Algorithm")) : void 0)));
   }
 });
 
@@ -1067,7 +1220,7 @@ module.exports = Deleting;
 
 
 
-},{"../../global/Events":16,"../modules/history.module":12,"react":"react"}],9:[function(require,module,exports){
+},{"../../global/Events":19,"../modules/history.module":15,"react":"react"}],9:[function(require,module,exports){
 
 /*
 matrix = [
@@ -1254,6 +1407,205 @@ module.exports = getMapDejkstra;
 
 
 },{}],11:[function(require,module,exports){
+var INF, MAIN, _main, getMinPath, init, main, range;
+
+range = function(s, f) {
+  var o, ref, results;
+  return (function() {
+    results = [];
+    for (var o = s, ref = f - 1; s <= ref ? o <= ref : o >= ref; s <= ref ? o++ : o--){ results.push(o); }
+    return results;
+  }).apply(this);
+};
+
+init = function(W, n) {
+  var A, Prev, a, i, j, len, len1, len2, len3, o, p, q, r, ref, ref1, ref2, ref3;
+  A = [];
+  Prev = [];
+  ref = range(0, n);
+  for (o = 0, len = ref.length; o < len; o++) {
+    i = ref[o];
+    a = [];
+    ref1 = range(0, n);
+    for (p = 0, len1 = ref1.length; p < len1; p++) {
+      j = ref1[p];
+      a.push(W[i][j]);
+    }
+    A.push(a);
+  }
+  ref2 = range(0, n);
+  for (q = 0, len2 = ref2.length; q < len2; q++) {
+    i = ref2[q];
+    a = [];
+    ref3 = range(0, n);
+    for (r = 0, len3 = ref3.length; r < len3; r++) {
+      j = ref3[r];
+      a.push(i !== j ? j : "-");
+    }
+    Prev.push(a);
+  }
+  return {
+    A: A,
+    Prev: Prev
+  };
+};
+
+main = function(_A, _Prev, n) {
+  var A, Prev, _time, i, j, k, len, len1, len2, o, p, q, ref, ref1, ref2, time;
+  _time = performance.now();
+  A = _A;
+  Prev = _Prev;
+  ref = range(0, n);
+  for (o = 0, len = ref.length; o < len; o++) {
+    k = ref[o];
+    ref1 = range(0, n);
+    for (p = 0, len1 = ref1.length; p < len1; p++) {
+      i = ref1[p];
+      ref2 = range(0, n);
+      for (q = 0, len2 = ref2.length; q < len2; q++) {
+        j = ref2[q];
+        if (A[i][k] < INF && A[k][j] < INF && A[i][k] + A[k][j] < A[i][j] && i !== j) {
+          A[i][j] = A[i][k] + A[k][j];
+          Prev[i][j] = k;
+        } else {
+          if (i === j) {
+            A[i][j] = 0;
+          }
+        }
+      }
+    }
+  }
+  time = performance.now() - _time;
+  return {
+    A: A,
+    Prev: Prev,
+    time: time
+  };
+};
+
+getMinPath = function(m, l, A, W) {
+  var finish, i, len, len1, o, p, path, ref, start, subpath, summ;
+  if (m === l) {
+    return 0;
+  }
+  start = m;
+  finish = l;
+  path = [m];
+  subpath = [];
+  while (W[m][l] !== l) {
+    subpath.push(W[m][l]);
+    l = W[m][l];
+  }
+  subpath.reverse();
+  for (o = 0, len = subpath.length; o < len; o++) {
+    i = subpath[o];
+    path.push(i);
+  }
+  path.push(finish);
+  console.log(start + " -> " + finish + ": path" + path);
+  summ = 0;
+  ref = range(0, path.length - 1);
+  for (p = 0, len1 = ref.length; p < len1; p++) {
+    i = ref[p];
+    summ += A[path[i]][path[i + 1]];
+  }
+  return summ;
+};
+
+_main = function(_start, A, Prev, n) {
+  var Mins, _time, i, len, o, obj, ref, time;
+  Mins = [];
+  _time = performance.now();
+  ref = range(0, n);
+  for (o = 0, len = ref.length; o < len; o++) {
+    i = ref[o];
+    Mins.push((
+      obj = {},
+      obj["" + i] = getMinPath(_start, i, A, Prev),
+      obj
+    ));
+  }
+  time = performance.now() - _time;
+  return {
+    Mins: Mins,
+    time: time
+  };
+};
+
+INF = 20000000000000;
+
+MAIN = function(start, W) {
+  var A, Prev, n, time;
+  n = W.length;
+  A = init(W, n).A;
+  Prev = init(W, n).Prev;
+  A = main(A, Prev, n).A;
+  Prev = main(A, Prev, n).Prev;
+  time = main(A, Prev, n).time;
+  time += _main(start, A, Prev, n).time;
+  return {
+    maps: _main(start, A, Prev, n).Mins,
+    time: time
+  };
+};
+
+module.exports = MAIN;
+
+
+
+},{}],12:[function(require,module,exports){
+var INF, main, range;
+
+range = function(s, f) {
+  var l, ref, results;
+  return (function() {
+    results = [];
+    for (var l = s, ref = f - 1; s <= ref ? l <= ref : l >= ref; s <= ref ? l++ : l--){ results.push(l); }
+    return results;
+  }).apply(this);
+};
+
+INF = 20000000000000;
+
+main = function(W, start) {
+  var F, Mins, N, i, j, k, l, len, len1, len2, len3, len4, m, n, o, p, ref, ref1, ref2, ref3;
+  console.log(W, start);
+  N = W.length;
+  F = [];
+  ref = range(0, N);
+  for (l = 0, len = ref.length; l < len; l++) {
+    i = ref[l];
+    F.push(INF);
+  }
+  F[start] = 0;
+  ref1 = range(1, N);
+  for (m = 0, len1 = ref1.length; m < len1; m++) {
+    k = ref1[m];
+    ref2 = range(0, N);
+    for (n = 0, len2 = ref2.length; n < len2; n++) {
+      i = ref2[n];
+      ref3 = range(0, N);
+      for (o = 0, len3 = ref3.length; o < len3; o++) {
+        j = ref3[o];
+        if (F[j] + W[j][i] < F[i]) {
+          F[i] = F[j] + W[j][i];
+        }
+      }
+    }
+  }
+  Mins = {};
+  for (j = p = 0, len4 = F.length; p < len4; j = ++p) {
+    i = F[j];
+    Mins[j] = i;
+  }
+  return Mins;
+};
+
+module.exports = main;
+
+
+
+},{}],13:[function(require,module,exports){
 
 /*
 	coords = [
@@ -1282,7 +1634,7 @@ getWeight = function(coords) {
     cat1 = Math.abs(coords1.x - coords2.x);
     cat2 = Math.abs(coords1.y - coords2.y);
     hypotenuse = Math.sqrt((Math.pow(cat1, 2)) + (Math.pow(cat2, 2)));
-    return (Math.round(hypotenuse)) / 20;
+    return Math.round((Math.round(hypotenuse)) / 20);
   }
 };
 
@@ -1290,7 +1642,171 @@ module.exports = getWeight;
 
 
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
+"use strict";
+var DeleteGarbage, div, getPaths_max, getRandomInt, get_Nodes_random, get_Nodes_sequence, hittingOnInterval, write_paths;
+
+getRandomInt = function(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+};
+
+hittingOnInterval = function(nodes, fl_screen, cx, cy) {
+  var j, k, len, obj;
+  obj = {
+    x: 0,
+    y: 0
+  };
+  for (k = 0, len = nodes.length; k < len; k++) {
+    j = nodes[k];
+    if ((j.cx - fl_screen <= cx && cx <= j.cx + fl_screen)) {
+      obj.x = 1;
+    }
+    if ((j.cy - fl_screen <= cy && cy <= j.cy + fl_screen)) {
+      obj.y = 1;
+    }
+  }
+  return obj;
+};
+
+get_Nodes_random = function(n, fl_screen, fl_nodes, screen, _nodes) {
+  var cx, cy, i, k, nodes, ref, x_max, x_min, y_max, y_min;
+  fl_nodes += 20;
+  x_min = fl_screen;
+  x_max = screen.width - fl_screen;
+  y_min = fl_screen;
+  y_max = screen.height - fl_screen;
+  nodes = _nodes || [];
+  for (i = k = 0, ref = n - 1; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
+    if (nodes.length === n) {
+      break;
+    } else {
+      console.log(i);
+      cx = getRandomInt(x_min, x_max);
+      cy = getRandomInt(y_min, y_max);
+      if (hittingOnInterval(nodes, fl_screen, cx, cy).x === 0 && hittingOnInterval(nodes, fl_screen, cx, cy).y === 0) {
+        nodes.push({
+          cx: cx,
+          cy: cy
+        });
+        console.log("ok");
+      } else {
+        console.log("no");
+        console.log([cx, cy]);
+      }
+    }
+  }
+  if (nodes.length < n) {
+    return get_Nodes_random(n, fl_screen, fl_nodes, screen, nodes);
+  } else {
+    return nodes;
+  }
+};
+
+div = function(val, b) {
+  return (val - val % b) / b;
+};
+
+get_Nodes_sequence = function(n, fl_screen, fl_nodes, screen) {
+  var cx, cy, d, i, j, k, nodes, ref, x_max, x_min, y_max, y_min;
+  fl_nodes += 20;
+  x_min = fl_screen;
+  x_max = screen.width - fl_screen;
+  y_min = fl_screen;
+  y_max = screen.height - fl_screen;
+  nodes = [];
+  j = 0;
+  d = 0;
+  console.log(div(screen.width - fl_screen * 2, n));
+  console.log(div(Math.round(x_max - x_min), 50));
+  for (i = k = 0, ref = n - 1; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
+    cx = x_min + j * fl_nodes + fl_nodes;
+    cy = fl_screen + d * 50;
+    if (i % div(Math.round(x_max - x_min), 50) === 0) {
+      d++;
+      j = 0;
+      cx = x_min + j * fl_nodes + fl_nodes;
+      cy = fl_screen + d * 50;
+      nodes.push({
+        cx: cx,
+        cy: cy
+      });
+    } else {
+      nodes.push({
+        cx: cx,
+        cy: cy
+      });
+    }
+    j++;
+  }
+  return nodes;
+};
+
+getPaths_max = function(n) {
+  var N, i, k, n1, ref;
+  n1 = 3;
+  N = 3;
+  for (i = k = 0, ref = n - 4; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
+    N += n1;
+    n1++;
+  }
+  return N;
+};
+
+DeleteGarbage = function(arr) {
+  var __arr, _arr, a, i, j, k, l, len, len1, now1, now2, tmp;
+  for (j = k = 0, len = arr.length; k < len; j = ++k) {
+    i = arr[j];
+    now1 = +i[0].match(/\d+/g)[0];
+    now2 = +i[1].match(/\d+/g)[0];
+    if (now2 < now1) {
+      tmp = arr[j][0];
+      arr[j][0] = arr[j][1];
+      arr[j][1] = tmp;
+    }
+  }
+  _arr = [];
+  for (l = 0, len1 = arr.length; l < len1; l++) {
+    i = arr[l];
+    _arr.push(i[0] + i[1]);
+  }
+  a = new Set(_arr);
+  __arr = [];
+  a.forEach((function(_this) {
+    return function(v) {
+      return __arr.push([v.match(/circle\d+/g)[0], v.match(/circle\d+/g)[1]]);
+    };
+  })(this));
+  return __arr;
+};
+
+write_paths = function(procents, n, I) {
+  var MAX, N, arr, d, i, j, k, l, paths, ref, ref1;
+  if (I == null) {
+    I = 0;
+  }
+  MAX = getPaths_max(n);
+  N = MAX * procents / 100;
+  paths = [];
+  d = 1;
+  arr = [];
+  for (i = k = 0, ref = Math.round(n * procents / 100) - 1; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
+    for (j = l = 0, ref1 = Math.round(n * procents / 100) - 1; 0 <= ref1 ? l <= ref1 : l >= ref1; j = 0 <= ref1 ? ++l : --l) {
+      if (i !== j) {
+        paths.push(["circle" + i, "circle" + j]);
+      }
+    }
+  }
+  return DeleteGarbage(paths);
+};
+
+module.exports = {
+  get_Nodes_sequence: get_Nodes_sequence,
+  write_paths: write_paths
+};
+
+
+
+},{}],15:[function(require,module,exports){
 var History_class, ee, history_app;
 
 ee = require("../../global/Events");
@@ -1370,27 +1886,47 @@ module.exports = history_app;
 
 
 
-},{"../../global/Events":16}],13:[function(require,module,exports){
-var Switcher, dejkstra, ee;
+},{"../../global/Events":19}],16:[function(require,module,exports){
+var INF, Switcher, dejkstra, ee, floyda, forda;
 
 ee = require("../../global/Events");
 
 dejkstra = require("./algorithms/dejkstra.algorithm.fn");
+
+floyda = require("./algorithms/floyda.algorithm.fn");
+
+forda = require("./algorithms/forda.algorithm.fn");
+
+INF = 20000000000000;
 
 Switcher = (function() {
   function Switcher(ArrNames, Paths, start) {
     this.ArrNames = ArrNames;
     this.Paths = Paths;
     this.start = start;
+    this.Mxw = [];
     this.graph = {};
     this._obj = {};
+    this.n = 0;
     this.time = 0;
+    this.ALGNOW = "";
   }
+
+  Switcher.prototype.setArrMx = function(arr) {
+    var i, k, len, results;
+    this.Mxw = [];
+    results = [];
+    for (k = 0, len = arr.length; k < len; k++) {
+      i = arr[k];
+      results.push(this.Mxw.push(i));
+    }
+    return results;
+  };
 
   Switcher.prototype.regist = function(data) {
     if (typeof data === "string") {
-      console.log(data);
-      return this.start = data;
+      this.start = data;
+      return this.init(this.ALGNOW);
     } else {
       if (typeof data[0][0] === "string") {
         return this.ArrNames = data;
@@ -1400,12 +1936,11 @@ Switcher = (function() {
     }
   };
 
-  Switcher.prototype.getGraph = function() {
-    var arrNames, i, j, k, l, len, len1, len2, m, obj, paths, time, tmp;
+  Switcher.prototype.getGraph_obj = function() {
+    var arrNames, i, j, k, l, len, len1, len2, m, obj, paths, tmp;
     arrNames = this.ArrNames;
     paths = this.Paths;
     obj = {};
-    time = performance.now();
     for (j = k = 0, len = arrNames.length; k < len; j = ++k) {
       i = arrNames[j];
       obj[i[0]] = obj[i[0]] || {};
@@ -1422,22 +1957,54 @@ Switcher = (function() {
       obj[i[0]] = obj[i[0]] || {};
       obj[i[0]][i[1]] = paths[j].weight;
     }
-    this.time = performance.now() - time;
     return this.graph = obj;
   };
 
+  Switcher.prototype.getGraph_mx = function() {
+    var _arr, arr, i, j, k, l, len, len1, ref;
+    console.log(this.Mxw);
+    arr = [];
+    ref = this.Mxw;
+    for (k = 0, len = ref.length; k < len; k++) {
+      i = ref[k];
+      _arr = [];
+      for (l = 0, len1 = i.length; l < len1; l++) {
+        j = i[l];
+        _arr.push(j !== 0 ? j : INF);
+      }
+      arr.push(_arr);
+    }
+    this.Mx = arr;
+    return this.n = arr.length;
+  };
+
   Switcher.prototype.AlgProcess = function(type) {
+    var time;
     switch (type) {
       case "dejkstra":
-        console.log(this.graph);
-        return this._obj = (dejkstra(this.graph, this.start)) || {};
+        console.log("dejkstra");
+        this.getGraph_obj();
+        time = performance.now();
+        this._obj = (dejkstra(this.graph, this.start)) || {};
+        return this.time = performance.now() - time;
+      case "floyda":
+        this.getGraph_mx();
+        console.log(this.Mx);
+        this._obj = (floyda(+this.start.match(/\d+/g)[0], this.Mx).maps) || {};
+        return this.time = floyda(+this.start.match(/\d+/g)[0], this.Mx).time;
+      case "forda":
+        console.log("forda");
+        this.getGraph_mx();
+        time = performance.now();
+        this._obj = (forda(this.Mx, +this.start.match(/\d+/g)[0])) || {};
+        return this.time = performance.now() - time;
       default:
         return this._obj = {};
     }
   };
 
   Switcher.prototype.init = function(type_alg) {
-    this.getGraph();
+    this.ALGNOW = type_alg;
     this.AlgProcess(type_alg);
     return ee.emit("sendDataAlgs", {
       type: type_alg,
@@ -1454,7 +2021,7 @@ module.exports = new Switcher;
 
 
 
-},{"../../global/Events":16,"./algorithms/dejkstra.algorithm.fn":10}],14:[function(require,module,exports){
+},{"../../global/Events":19,"./algorithms/dejkstra.algorithm.fn":10,"./algorithms/floyda.algorithm.fn":11,"./algorithms/forda.algorithm.fn":12}],17:[function(require,module,exports){
 var Node, React;
 
 React = require('react');
@@ -1497,7 +2064,7 @@ module.exports = Node;
 
 
 
-},{"react":"react"}],15:[function(require,module,exports){
+},{"react":"react"}],18:[function(require,module,exports){
 var Path, React;
 
 React = require('react');
@@ -1505,49 +2072,39 @@ React = require('react');
 Path = React.createClass({
   displayName: 'Path',
   render: function() {
-    if (this.props.CalcWeightMode) {
-      return React.createElement("g", null, React.createElement("path", {
-        "d": this.props.d,
-        "fill": "transparent",
-        "stroke": "black",
-        "style": {
-          strokeWidth: 2
-        }
-      }), React.createElement("rect", {
-        "x": (this.props._xy.x !== this.props.__xy.x && this.props._xy.y !== this.props.__xy.y ? Math.min(this.props._xy.x, this.props.__xy.x) + (Math.abs(this.props._xy.x - this.props.__xy.x)) / 2 - 23.5 : this.props._xy.x - 29.5),
-        "y": (this.props._xy.x !== this.props.__xy.x && this.props._xy.y !== this.props.__xy.y ? Math.min(this.props._xy.y, this.props.__xy.y) + (Math.abs(this.props._xy.y - this.props.__xy.y)) / 2 - 16 : this.props._xy.y - 130),
-        "width": "60",
-        "height": "30",
-        "fill": this.props.fill,
-        "widthStroke": "5",
-        "stroke": "#333"
-      }), React.createElement("text", {
-        "x": (this.props._xy.x !== this.props.__xy.x && this.props._xy.y !== this.props.__xy.y ? Math.min(this.props._xy.x, this.props.__xy.x) + (Math.abs(this.props._xy.x - this.props.__xy.x)) / 2 - 15 : this.props._xy.x - 10),
-        "y": (this.props._xy.x !== this.props.__xy.x && this.props._xy.y !== this.props.__xy.y ? Math.min(this.props._xy.y, this.props.__xy.y) + (Math.abs(this.props._xy.y - this.props.__xy.y)) / 2 - 5 : this.props._xy.y - 120),
-        "fill": "#fff",
-        "dy": ".6em",
-        "fontFamily": "sans-serif",
-        "fontSize": "17px",
-        "className": "weightPaths"
-      }, "" + this.props.weight));
-    } else {
-      return React.createElement("path", {
-        "d": this.props.d,
-        "fill": "transparent",
-        "stroke": this.props.color,
-        "style": {
-          strokeWidth: 2
-        }
-      });
-    }
+    return React.createElement("path", {
+      "d": this.props.d,
+      "fill": "transparent",
+      "stroke": this.props.color,
+      "style": {
+        strokeWidth: 2
+      }
+    });
   }
 });
 
 module.exports = Path;
 
 
+/*
+if @props.CalcWeightMode
+			<g>
+				<path d={@props.d} fill="transparent" stroke="black" style={{strokeWidth: 2}}/>
+				<rect x={if @props._xy.x != @props.__xy.x and @props._xy.y != @props.__xy.y then (Math.min(@props._xy.x, @props.__xy.x) + (Math.abs @props._xy.x - @props.__xy.x) / 2 - 32) else (@props._xy.x - 32.5)} 
+							y={if @props._xy.x != @props.__xy.x and @props._xy.y != @props.__xy.y then (Math.min(@props._xy.y, @props.__xy.y) + (Math.abs @props._xy.y - @props.__xy.y) / 2 - 16) else (@props._xy.y - 130)}
+							width="60" height="30" fill={@props.fill} widthStroke="5" stroke="#333"></rect>
+				<text x={if @props._xy.x != @props.__xy.x and @props._xy.y != @props.__xy.y then (Math.min(@props._xy.x, @props.__xy.x) + (Math.abs @props._xy.x - @props.__xy.x) / 2 - 15) else (@props._xy.x - 10)} 
+							y={if @props._xy.x != @props.__xy.x and @props._xy.y != @props.__xy.y then (Math.min(@props._xy.y, @props.__xy.y) + (Math.abs @props._xy.y - @props.__xy.y) / 2 - 5) else (@props._xy.y - 120)}
+							fill="#fff" dy=".6em" fontFamily="sans-serif" fontSize="17px" className="weightPaths">
+								{""+@props.weight}
+				</text>
+			</g>
+		else
+ */
 
-},{"react":"react"}],16:[function(require,module,exports){
+
+
+},{"react":"react"}],19:[function(require,module,exports){
 var EventEmitter, ee;
 
 EventEmitter = require("events").EventEmitter;
@@ -1558,7 +2115,7 @@ module.exports = ee;
 
 
 
-},{"events":17}],17:[function(require,module,exports){
+},{"events":20}],20:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
