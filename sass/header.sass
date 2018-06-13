@@ -1,199 +1,169 @@
 @import "bourbon"
 @import "vars.sass"
-@import "../app/libs/font-awesome/css/font-awesome.min"
+// @import "../app/libs/font-awesome/css/font-awesome.min"
+@import "app/libs/animate/animate.sass"
 
-body
-	font-size: 16px
-	min-width: 320px
-	position: relative
-	line-height: 1.6
-	font-family: "RobotoRegular", sans-serif
-	overflow-x: hidden
+html
+	height: 100%
+	width: 100% !important
+	body
+	  font-size: 16px
+	  min-width: 320px
+	  position: relative
+	  line-height: 1.6
+	  font-family: "RobotoRegular", sans-serif
+	  overflow-x: hidden
+	  height: 100%
+	  width: 100%
+
 input
   outline: none
   &::placeholder
     color: rgba(0,0,0,.4)
 .hidden
-	display: none
-
-header.main_header
-  width: 100%
-  height: 725px
-  background-image: url(../img/header_bg.jpg)
-  background-size: cover
-  .main_nav
-    //width: 100% !important
-    height: 80px !important
-    background-color: rgba(0,0,0,.6) !important
-    box-shadow: 0px 21px 30px 10px rgba(0,0,0,.6)
-    border: none
-    .main_list_header_left, .navbar-right
-      padding-left: 0
-      min-height: 85px
-      margin: 0
-
-      li#noDrop
-        display: inline-block
-        a.link_nodrop
-          color: #fff
-          display: block
-          padding: 29.9px 14px
-          text-decoration: none
-          font-family: sans-serif
-          font-size: em(16px)
-          border-top: transparent 2px solid
-          transition: all .2s ease-in-out
-          &:hover
-            border-top: $AColor 2px solid
-            padding: 26.9px 14px
-            i.fa
-              color: $AColor
-          i.fa
-            padding: 0 5px 0 0
-            transition: all .2s ease-in-out
-        .active
-          border-top: $AColor 2px solid !important
-          i.fa
-            color: $AColor
-      li.phone-nav
-        padding: 20px 0
-        span
-          color: #fff
-.no-nodrop
-
-.mark_MColor
-  background-color: $MColor
-  padding: 3px
-  border-radius: 10px
-.welcome
-  font-family: "Roboto Condensed", sans-serif
-  color: #fff
-  margin-top: 40px
-.navbar-default
-  .navbar-nav
-    .open
-      a:focus
-        background-color: transparent
-        border-top: $MColor 2px solid !important
-        &:active
-          border-top: $MColor 2px solid !important
-
-
-
-a.navbar-brand
-  padding: 27.9px 40px 29.9px 0
-  color: #fff !important
-  font-size: em(27px)
-  &:hover
-    color: darken(#fff, 1%)
-.cgrey
-  color: grey
-  font-size: em(12px)
-.cMColor
-  color: $MColor
-
-
-.drop-noactive
-  //animation: dropmenu_fadeOut .2s
   display: none
-.drop-active
-  animation: dropmenu_fadeIn .3s
 
-.dropmenu
-  position: absolute
-  top: 81.78px
-  right: 0
-  min-height: 100px
-  min-width: 200px
-  height: 240px
-  width: 240px
-  background-color: rgba(255, 255, 255, 0.95)
-  border-radius: 3px
-  box-shadow: 0px 3px 15px rgb(0, 0, 0)
-  padding-top: 10px
+//Load Libs SASS
 
-@keyframes dropmenu_fadeIn
-  0%
-    top: 100px
-    display: none
-    opacity: 0
-  50%
-    op: 0.4
-  100%
-    opacity: 1
-    display: block
-    top: 81.78px
+*::-webkit-input-placeholder
+  color: #666
+  opacity: 1
 
+*:-moz-placeholder
+  color: #666
+  opacity: 1
 
-//defButton button_login
-.defButton
-  border: none
-  border-bottom: 2px solid darken($AColor, 10%) !important
-  border-radius: 20px
-  background-color: $AColor
-  color: #fff
-  height: 33px
-.button_login
-  outline: none
-  display: block
-  width: 150px
-  margin: auto
-  &:hover
-    background-color: darken($AColor, 2%)
-  &:active
-    background-color: lighten($AColor, 2%)
-.defInput
-  margin: 20px auto
-  display: block
-  width: 200px
-  border-radius: 2px
-  border: none
-  border: 1px solid rgba($AColor, 0.9)
-  height: 30px
-  padding-left: 20px
-  color: #333
-.dropmenuLogin::before
-  font-family: "FontAwesome"
-  content: "\f007"
-  position: absolute
-  margin: 3px 0 0 25px
-.dropmenuPass::before
-  font-family: "FontAwesome"
-  content: "\f023"
-  position: absolute
-  margin: 3px 0 0 25px
-p
-  .dropmenu_link
-    color: rgba(0,0,0,0.5)
-    text-align: center
-    width: 240px
-    display: inline
-    &:hover
-      color: rgba(0,0,0,0.6)
-    &:focus
-      color: rgba(0,0,0,0.6)
-    &:visited
-      color: rgba(0,0,0,0.6)
-    &:active
-      color: rgba(0,0,0,0.6)
-.wrap_dropmenu_link
-  text-align: center
-  padding: 10px 0 0 0 
-  margin: 0
+*::-moz-placeholder
+  color: #666
+  opacity: 1
 
+*:-ms-input-placeholder
+  color: #666
+  opacity: 1
 
-//MAIN content header
-.advantage_main
-  color: #fff
-  background-color: $MColor
-  font-size: em(22px)
-  padding: 5px 4px
-  width: 55%
-  margin-top: 100px
-.advantage_submain
-  margin-top: 20px
-  color: #fff
-  background-color: rgba($AColor, .8)
-  font-size: em(16px)
-  padding: 5px 4px
-  width: 36%
+body input:focus:required:invalid,
+body textarea:focus:required:invalid
+  color: #666
+body input:required:valid,
+body textarea:required:valid
+  color: #666
+
+// Main styles
+
+.fl
+  float: left
+.fr
+  float: right
+.df
+	display: -webkit-flex
+	display: -moz-flex
+	display: -ms-flex
+	display: -o-flex
+	display: flex
+.main__header
+	background-color: #eff0f2
+	height: 100%
+	display: -webkit-flex
+	display: -moz-flex
+	display: -ms-flex
+	display: -o-flex
+	display: flex
+	align-content: space-between
+	flex-direction: column
+	&_nav
+		height: 110px
+		display: -webkit-flex
+		display: -moz-flex
+		display: -ms-flex
+		display: -o-flex
+		display: flex
+		align-items: center
+		.logo
+			width: 100%
+			display: inline-block
+			.text_logo
+				+pttopx(28)
+				text-transform: uppercase
+				font-weight: bold
+				letter-spacing: 1px
+				border: 5px solid #170f1c
+				line-height: 38px
+				padding: 0 8px
+				a
+					text-decoration: none
+					color: #333
+					&:hover
+						text-decoration: none
+						color: #222
+					.logo_mark
+						color: $main_color
+		.main__header_menu
+			display: block
+			.header__hamburger
+				display: block
+				width: 50px
+				height: 50px
+				position: relative
+				// background-color: #000
+				.hamburger
+					display: inline-block
+					width: 100%
+					height: 100%
+					cursor: pointer
+					.line
+						width: 2rem
+						height: 2px
+						display: block
+						background-color: #606061
+						position: absolute
+						top: 50%
+						left: 50%
+						transform: translateX(-8px)
+						&::before
+							content: ''
+							width: 2rem
+							height: 2px
+							display: block
+							background-color: #606061
+							position: absolute
+							top: 50%
+							left: 50%
+							transform: translate(-10px, -8px)
+						&::after
+							content: ''
+							width: 2rem
+							height: 2px
+							display: block
+							background-color: #606061
+							position: absolute
+							top: 50%
+							left: 50%
+							transform: translate(-10px, 7px)
+	&_cnt
+		padding-top: 140px
+		.welcome
+			text-transform: uppercase
+			font-size: 2em
+			font-weight: bold
+			font-family: MontserratBold
+			color: $gray
+			text-shadow: 5px 5px 10px rgba(0,0,0,.24)
+			.mark_ac
+				padding: 10px
+				background-color: $accent_color
+		.wrp_btn_header
+			justify-content: center
+			.btn_header
+				color: $gray
+				width: 230px
+				padding: 18px 0
+				text-transform: uppercase
+				font-family: MontserratRegular
+				background-color: transparent
+				border: 2px solid #777879
+				margin-top: 150px
+				&:hover
+					color: darken($gray, 10%)
+					border: 2px solid darken(#777879, 5%)
+		.wrp_juice
+			margin-top: 50px

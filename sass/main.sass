@@ -1,151 +1,469 @@
 @import "bourbon"
 @import "vars.sass"
 @import "fonts.sass"
-//Load Libs SASS
-@import "app/libs/animate/animate.sass"
 
-*::-webkit-input-placeholder
-	color: #666
-	opacity: 1
+.aboutus
+	background-color: #f8fafa
+	height: 985px
+	width: 100%
+	padding-top: 129px
+	&__title
+		&_welcome
+			margin: 0
+			text-transform: uppercase
+			font-family: MontserratBold
+			color: #000
+			font-size: 38px
+		.substraction
+			color: #5e5f5f
+			font-family: MerriweatherRegular
+			text-transform: uppercase
+			padding: 18px 0
+			font-size: 18px
+	.slider
+		margin-top: 147px
+		.caption_slider
+			padding-left: 57px
+			h3
+				color: #3e3f3f
+				text-transform: uppercase
+				font-family: MerriweatherBold
+				font-size: 17px
+				padding: 10px 0
+			p
+				font-family: RalewayRegular
+				color: #727373
+				line-height: 30px
+				font-size: 16px
+		.slider_imgs
+			position: relative
+			width: 100%
+			height: 100%
+			display: block
+			height: 484px
+			.rect_bg
+				position: absolute
+				width: 480px
+				height: 412px
+				background-color: #eeeff1
+				display: block
+				top: 0
+				left: 0
+				bottom: 0
+				right: 0
+				margin: auto
+				// margin-left: calc(50% - (480px / 2))
+				// margin-top: calc(50% - (412px / 2))
+			.carousel
+				position: relative
+				.carousel-inner
+					.item
+						img
+							display: block
+							margin: auto
+				.carousel-indicators
+					position: absolute
+					bottom: -90px !important
+					ol.carousel-indicators
+						display: -webkit-flex
+						display: -moz-flex
+						display: -ms-flex
+						display: -o-flex
+						display: flex
+						justify-content: center
+						li
+							display: block
+							width: 10px !important
+							height: 10px !important
+							background-color: #d0d0d0 !important
 
-*:-moz-placeholder
-	color: #666
-	opacity: 1
-
-*::-moz-placeholder
-	color: #666
-	opacity: 1
-
-*:-ms-input-placeholder
-	color: #666
-	opacity: 1
-
-body input:focus:required:invalid,
-body textarea:focus:required:invalid
-	color: #666
-body input:required:valid,
-body textarea:required:valid
-	color: #666
-
-//Custom Styles Here
-.advantages
-  width: 100%
-  height: 1000px
-  background-color: #F8F8F8
-  color: #000
-  padding: 50px 0 70px 0
-  margin-bottom: 20px
-.item_advantages
-  padding: 0
-
-
-.item_row_advantages_img
-  height: 350px
-  width: 100%
-  position: relative
-  &::before
-    content: ''
-    position: absolute
-    top: 0
-    left: 0
-    background-color: rgba(0, 0, 0, .3)
-    width: 100%
-    height: 350px
-.item_row_advantages_desc
-  height: 350px
-  width: 100%
-  background-color: #fff
-  padding: 40px 30px
-  h3
-    //padding: 40px 0 0 0
-    margin: 0
-    color: $MColor
-    font-family: 'open-sans-bold'
-    font-size: em(17px)
-    letter-spacing: 1px
-
-.uppercase
-  text-transform: uppercase
-
-.caption_advantages
-  color: #212121
-  font-family: "open-sans-bold"
-  letter-spacing: 3px
-  padding: 30px 0 20px 0
-  font-size: em(19px)
-.caption_advantagas_detailed
-  color: #777777
-  line-height: 25px
-.number_advantages
-  font-family: "Times New Roman"
-  font-style: italic
-.header_advantages
-  font-family: 'Josefin Sans', sans-serif;
-  letter-spacing: 5px
-  padding: 10px 0 40px 0
-.weves
-  img
-    display: inline-block
-
-.main_advantageses
-  width: 100%
-  height: 700px
-  display: block
-  box-shadow: 0 0 40px rgba(0,0,0,0.35)
-.caret_left_advantages
-  color: #fff
-  position: absolute
-  right: -2px
-  top: 50px
-  font-size: em(35px)
-.caret_right_advantages
-  color: #fff
-  position: absolute
-  left: -2px
-  top: 50px
-  font-size: em(35px)
-.caret_up_advantages
-  color: #fff
-  position: absolute
-  left: 50px
-  bottom: -12px
-  font-size: em(35px)
-
-#page
-  background-image: url(../img/8647.jpg)
-  background-repeat: no-repeat
-  background-size: cover
-  background-position-y: center
-  padding: 50px 0 20px 0
-  margin-bottom: 30px
-
-.image-caption.current
-  opacity: 0.75 !important
+ol.carousel-indicators li.active 
+  background: #71f6eb
 
 
-.controll-g
-  font-size: em(24px) !important
-.controls
-  padding: 5px 
-  background-color: #fff
-  height: 40px !important
-  border-radius: 3px
-.navigtion#thumbs
-  padding-top: 250px !important
-.container
-  position: relative
-  .morephoto
-    float: right
-    right: 70px
-    bottom: 160px
-    padding: 2px 45px
-    background-color: $MColor
-    color: #fff
-    font-size: em(20px)
-    border-radius: 30px
-    position: absolute
-.map
-  iframe
-    width: 100%
+ol.carousel-indicators li
+	width: 10px
+	height: 10px
+	background-color: #d0d0d0
+	border-radius: 3px !important
+
+
+// Section out works - FEATURED WORKS
+section.works
+	width: 100%
+	height: 1164px
+	background-color: #FFF
+	padding-top: 130px
+	.wrp_welcome
+		padding-bottom: 125px
+		h1
+			margin: 0
+			text-transform: uppercase
+			font-family: MontserratBold
+			color: #000
+			font-size: 38px
+		.substraction
+			color: #5e5f5f
+			font-family: MerriweatherRegular
+			text-transform: uppercase
+			padding: 18px 0
+			font-size: 18px
+	.main_features.items
+		padding-top: 124px 0 125px 0
+		.item
+			padding-bottom: 30px
+			img
+				width: 100%
+				display: block
+
+// Section our SERVICES
+
+section.our_services
+	background-color: #f9fbfb
+	height: 1813px
+	padding: 125px 0
+	.wrp_welcome
+		h1
+			margin: 0
+			text-transform: uppercase
+			font-family: MontserratBold
+			color: #000
+			font-size: 38px
+		.substraction
+			color: #5e5f5f
+			font-family: MerriweatherRegular
+			text-transform: uppercase
+			padding: 18px 0
+			font-size: 18px
+	.items
+		padding-top: 125px
+		.row_items
+			height: 423px
+		.item
+			padding: 14px 7px
+			position: relative
+			img
+				
+				height: 100%
+				overflow: hidden
+			.caption_long_ontop_first.active
+				width: 652px
+				height: 422px
+				position: absolute
+				top: 14px
+				left: 7px
+				bottom: 14px
+				right: 7px
+				background-color: $main_color
+				padding: 64px
+				&:hover
+				h3
+					font-family: MerriweatherBold
+					text-transform: uppercase
+					font-size: 20px
+				p
+					font-family: RalewayRegular
+					color: #727373
+					padding-top: 36px
+				.close
+					color: #3f8983
+					float: left
+					margin-top: 60px
+					transition: all .1s ease-in-out
+					&:hover
+						color: #387973
+			.caption_ontop
+				opacity: 0
+				position: absolute
+				background-color: rgba(0,0,0,.65)
+				top: 14px
+				left: 9px
+				padding: 64px
+				color: #f7f7f7
+				display: -webkit-flex
+				display: -moz-flex
+				display: -ms-flex
+				display: -o-flex
+				display: flex
+				justify-content: flex-end
+				flex-direction: column
+				transition: all .2s ease-in-out
+				h3
+					font-family: MerriweatherBold
+					text-transform: uppercase
+					font-size: 20px
+					padding-bottom: 20px
+				p
+					font-family: RalewayRegular
+					font-size: 16px
+					padding-bottom: 40px
+				a
+					color: #f7f7f7
+					span
+						font-family: RalewayMedium
+						text-transform: uppercase
+					i
+						padding-left: 15px
+				&:hover
+					opacity: 1
+			.caption_short_ontop
+				width: 477px
+				height: 422px
+				&_last
+					left: 7px
+			.caption_long_ontop
+				width: 652px
+				height: 422px
+				&_last
+					left: 24px 
+
+
+
+section.our_team
+	padding: 125px 0
+	.wrp_welcome
+		h1
+			margin: 0
+			text-transform: uppercase
+			font-family: MontserratBold
+			color: #000
+			font-size: 38px
+		.substraction
+			color: #5e5f5f
+			font-family: MerriweatherRegular
+			text-transform: uppercase
+			padding: 18px 0
+			font-size: 18px
+	.items
+		.item
+			padding: 0 8px 8px 8px 
+			position: relative
+			img
+				width: 100%
+				display: block
+			.caption
+				position: absolute
+				bottom: 0
+				top: 0
+				left: 0
+				right: 0
+				width: 335px
+				margin: 0 auto
+				padding-bottom: 20px
+				display: -webkit-flex
+				display: -moz-flex
+				display: -ms-flex
+				display: -o-flex
+				display: flex
+				justify-content: flex-end
+				flex-direction: column
+				opacity: 0
+				transition: all .2s ease-in-out
+				.wrp_cap
+					background-color: $main_color
+					padding: 27px 37px
+					position: relative
+					.title
+						.name_caption
+							font-family: MerriweatherBlack
+							display: inline-block
+							padding-bottom: 17px
+						.more_name_caption
+							font-family: MerriweatherRegular
+							color: #767776
+							font-style: italic
+					p.substraction
+						font-family: RalewayRegular
+						color: #16312f
+					.wrp_icons
+						i
+							color: #2f6f6a
+							padding-right: 15px
+							font-size: 13px
+							cursor: pointer
+							&:hover
+								color: darken(#2f6f6a, 10%)
+					&::before
+						content: "\f0de"
+						font-family: fontawesome
+						position: absolute
+						font-size: 29px
+						color: $main_color
+						top: -18px
+						left: 21px
+				&:hover
+					opacity: 1
+
+section.what_they_say
+	background-color: #f9fbfb
+	padding: 125px 0 175px 0
+	.title
+		&_welcome
+			margin: 0
+			text-transform: uppercase
+			font-family: MontserratBold
+			color: #000
+			font-size: 38px
+		.substraction
+			color: #5e5f5f
+			font-family: MerriweatherRegular
+			text-transform: uppercase
+			padding: 18px 0
+			font-size: 18px
+	.slider
+		padding-top: 125px
+		.carousel-inner
+			position: relative
+			.item
+				height: 483px
+				overflow: none
+				padding: 10px 0
+				&_img
+					overflow: none
+					height: 100%
+					position: relative
+					// .rect_bg
+					// 	position: absolute
+					// 	width: 480px
+					// 	height: 412px
+					// 	background-color: #eeeff1
+					// 	display: block
+					// 	top: 0
+					// 	left: 0
+					// 	bottom: 0
+					// 	right: 0
+					// 	margin: auto
+					// 	z-index: 3
+					&::before
+						content: ''
+						position: absolute
+						width: 480px
+						height: 412px
+						background-color: #eeeff1
+						display: block
+						top: 0
+						left: 0
+						bottom: 0
+						right: 0
+						margin: auto
+					img
+						position: absolute
+						height: 100%
+						top: 0
+						bottom: 0
+						left: 0
+						right: 0
+						margin: auto
+						box-shadow: 0 0 20px rgba(0,0,0,.2)
+						z-index: 4
+						border-radius: 3px
+				&_caption
+					position: relative
+					height: 100%
+					padding-left: 80px
+					.caption
+						position: absolute
+						top: 0
+						left: 50px
+						right: 0
+						bottom: 0
+						margin: auto
+						height: 412px
+						background-color: #eaebed
+						display: -webkit-flex
+						display: -moz-flex
+						display: -ms-flex
+						display: -o-flex
+						display: flex
+						justify-content: center
+						align-items: center
+						padding: 0 82px
+						.wrp_cap
+							display: -webkit-flex
+							display: -moz-flex
+							display: -ms-flex
+							display: -o-flex
+							display: flex
+							flex-direction: column
+							justify-content: center
+							.title
+								text-align: center
+								.name_caption
+									font-family: MerriweatherBlack
+									display: inline-block
+									padding-bottom: 17px
+									font-size: 20px
+									padding-bottom: 33px
+								.more_name_caption
+									font-family: MerriweatherRegular
+									color: #767776
+									font-style: italic
+									font-size: 15px
+							p.substraction
+								font-family: RalewayRegular
+								color: #464647
+								font-size: 16px
+								text-align: center
+								padding-bottom: 35px
+							.wrp_stars
+								display: -webkit-flex
+								display: -moz-flex
+								display: -ms-flex
+								display: -o-flex
+								display: flex
+								justify-content: center
+								i
+									color: #f2da3b
+									padding-right: 8px
+									&:last-child
+										padding-right: 0
+		.carousel
+			position: relative
+			.carousel-indicators_wrp
+				// padding-top: 47px
+				.carousel-indicators
+					position: absolute
+					bottom: 0
+					left: 0
+					right: 0
+					top: 0
+					margin: 47px auto
+		.controls
+			position: absolute
+			right: 0
+			display: -webkit-flex
+			display: -moz-flex
+			display: -ms-flex
+			display: -o-flex
+			display: flex
+			// flex-direction: row-reverse
+			// order: -1
+			.carousel-control_icon
+				height: 53px
+				width: 53px
+				display: block
+				position: relative
+				background-color: #fff
+				opacity: 1
+				text-shadow: none
+				box-shadow: 0 0 15px rgba(0,0,0,.2)
+				margin-right: 30px
+				border-radius: 4px
+				transition: all .15s ease-in-out
+				&:last-child
+					margin-right: 0
+				&:hover
+					background-color: $main_color
+					span
+						color: #fff
+				span
+					color: #b2b2b2
+					font-size: 16px
+					line-height: 32px
+					transition: all .15s ease-in-out
+
+	
+
+
 //ALWAYS END
 @import "media"

@@ -24,5 +24,15 @@ $(function() {
 	//	});
 	//	return false;
 	//});
+	$('#myCarousel').carousel({
+		interval: 2000
+	});
+	// $('#myCarousel1').carousel({
+	// 	interval: 2000
+	// });
+
+	$(".close").click(function(){
+		$(".caption_long_ontop_first").toggle("active");
+	});
 	
 });

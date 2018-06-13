@@ -8,13 +8,7 @@ var gulp         = require('gulp'),
 		uglify       = require('gulp-uglify'),
 		coffee       = require('gulp-coffee');
 
-gulp.task('coffee', function(){
-  gulp.src('./coffee/*.coffee')
-    .pipe(coffee({bare: true}))
-    .pipe(gulp.dest('./app/js/'));
-});
-
-gulp.task('browser-sync', ['styles', 'scripts', "coffee"], function() {
+gulp.task('browser-sync', ['styles', 'scripts'], function() {
 		browserSync.init({
 				server: {
 						baseDir: "./app"
@@ -41,7 +35,8 @@ gulp.task('scripts', function() {
 		'./app/libs/jquery/jquery-1.11.2.min.js',
 		'./app/libs/waypoints/waypoints.min.js',
 		'./app/libs/animate/animate-css.js',
-		'./app/libs/bootstrap/js/bootstrap.min.js'
+		'./app/libs/bootstrap/js/bootstrap.min.js',
+		"./app/libs/plugins-scroll/plugins-scroll.js"
 		])
 		.pipe(concat('libs.js'))
 		// .pipe(uglify()) //Minify libs.js
@@ -53,8 +48,6 @@ gulp.task('watch', function () {
 	gulp.watch('app/libs/**/*.js', ['scripts']);
 	gulp.watch('app/js/*.js').on("change", browserSync.reload);
 	gulp.watch('app/*.html').on('change', browserSync.reload);
-	gulp.watch('./coffee/*.coffee', ['coffee']);
-	gulp.watch('./coffee/*.coffee').on('change', browserSync.reload);
 });
 
 gulp.task('default', ['browser-sync', 'watch']);
