@@ -222,6 +222,7 @@ section.our_services
 section.our_team
 	padding: 125px 0
 	.wrp_welcome
+		padding-bottom: 100px
 		h1
 			margin: 0
 			text-transform: uppercase
@@ -298,6 +299,7 @@ section.what_they_say
 	background-color: #f9fbfb
 	padding: 125px 0 175px 0
 	.title
+
 		&_welcome
 			margin: 0
 			text-transform: uppercase
@@ -462,8 +464,155 @@ section.what_they_say
 					line-height: 32px
 					transition: all .15s ease-in-out
 
-	
-
-
+.our_sponsors
+	padding: 125px 0
+	.items
+		.row_top
+			width: 100%
+			height: auto
+			display: -webkit-flex
+			display: -moz-flex
+			display: -ms-flex
+			display: -o-flex
+			display: flex
+			align-items: center
+			justify-content: center
+			padding-bottom: 67px
+			img
+				padding-right: 88px
+				&:last-child
+					padding-right: 0
+		.row_bottom
+			width: 100%
+			height: auto
+			display: -webkit-flex
+			display: -moz-flex
+			display: -ms-flex
+			display: -o-flex
+			display: flex
+			align-items: center
+			justify-content: space-between
+footer.main_footer
+	// height: 1017px
+	width: 100%
+	display: block
+	// background-color: red
+	.form
+		height: 706px
+		background-image: url(../img/footer_bottom_bg.jpg)
+		background-position: center
+		background-size: cover
+		padding: 150px 0
+		.forms
+			background-color: rgba(#39454d, .7)
+			padding: 32px
+			height: 475px
+			position: relative
+			textarea, input
+				width: 100%
+				background-color: transparent
+				border: none
+				border-bottom: 2px solid #858b8e
+				height: 50px
+				margin-top: 10px
+				padding-top: 15px
+				font-family: RalewayRegular
+				color: rgba(#fff, .6)
+				font-size: 15px
+				transition: all .2s ease-in-out
+				&::placeholder
+					color: rgba(#fff, .6)
+					font-size: 15px
+				&:focus
+					border-bottom: 2px solid lighten(#858b8e, 10%)
+			textarea
+				padding-top: 20px
+				resize: none
+				height: 120px
+				outline: none
+			button.send_massage
+				margin-top: 32px
+				font-size: 18px
+				padding: 16px 0
+				width: 245px
+				text-transform: uppercase
+				font-family: MontserratRegular
+				background-color: #6eeee4
+				color: #214744
+				border: none
+				outline: none
+				position: absolute
+				bottom: 32px
+		.contacts
+			background-color: rgba(#39454d, .7)
+			padding: 32px
+			height: auto
+			color: rgba(#fff, .7)
+			font-family: RalewayRegular
+			p
+				margin: 0
+				font-size: 15px
+			.wrp
+				padding: 37px 0
+				font-size: 15px
+			.maps
+				img
+					width: 100%
+	.footer_bottom
+		width: 100%
+		height: 311px
+		background-color: #262b2e
+		.items
+			height: 100%
+			color: rgba(#fff, .8)
+			display: -webkit-flex
+			display: -moz-flex
+			display: -ms-flex
+			display: -o-flex
+			display: flex
+			justify-content: center
+			flex-direction: column
+			align-items: center
+			.follow_us
+				text-transform: uppercase
+				font-family: RalewayRegular
+				font-size: 16px
+				padding: 0 0 18px 0
+				margin: 0
+				display: inline-block
+			.icons
+				display: -webkit-flex
+				display: -moz-flex
+				display: -ms-flex
+				display: -o-flex
+				display: flex
+				flex-direction: row
+				padding-bottom: 43px
+				.wrp_icon
+					display: -webkit-flex
+					display: -moz-flex
+					display: -ms-flex
+					display: -o-flex
+					display: flex
+					justify-content: center
+					align-items: center
+					width: 46px
+					height: 46px
+					background-color: #3f4244
+					margin-right: 8px
+					transition: all .1s ease-in-out
+					&:last-child
+						margin-right: 0
+					i
+						display: inline-block
+						font-size: 24px
+						transition: all .1s ease-in-out
+					&:hover
+						background-color: #6eeee4
+						i
+							color: #081e1c
+			.copyright
+				color: rgba(#fff, .4)
+				display: inline-block
 //ALWAYS END
 @import "media"
