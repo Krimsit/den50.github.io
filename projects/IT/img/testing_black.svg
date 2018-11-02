@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="243.19939"
-     inkscape:cy="-47.695652"
+     inkscape:cx="114.62796"
+     inkscape:cy="-53.767081"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -75,8 +75,10 @@
          x="56.696426"
          y="39.598213"
          style="stroke-width:0.26458332"><tspan
-   style="fill:#ffffff;fill-opacity:1"
-   id="tspan5402">Testing</tspan>App</tspan><tspan
+           style="fill:#ffffff;fill-opacity:1"
+           id="tspan5402">Testing</tspan><tspan
+           style="fill:#2c2e2e;fill-opacity:1"
+           id="tspan4491">App</tspan></tspan><tspan
          sodipodi:role="line"
          x="56.696426"
          y="57.237103"
@@ -92,10 +94,12 @@
          id="tspan5046"
          x="71.248512"
          y="50.559525"
-         style="font-size:7.05555534px;stroke-width:0.26458332">@projectsSchool<tspan
-   style="font-size:7.05555534px;fill:#f0ca22;fill-opacity:1"
-   id="tspan5296">#</tspan><tspan
-   style="fill:#f0ca22;fill-opacity:1"
-   id="tspan5408">3</tspan></tspan></text>
+         style="font-size:7.05555534px;stroke-width:0.26458332"><tspan
+           style="fill:#2d2d30;fill-opacity:1"
+           id="tspan4493">@projectsSchool</tspan><tspan
+           style="font-size:7.05555534px;fill:#f0ca22;fill-opacity:1"
+           id="tspan5296">#</tspan><tspan
+           style="fill:#f0ca22;fill-opacity:1"
+           id="tspan5408">3</tspan></tspan></text>
   </g>
 </svg>
