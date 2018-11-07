@@ -1,0 +1,167 @@
+@import "bourbon"
+@import "vars.sass"
+// @import "../app/libs/font-awesome/css/font-awesome.min"
+@import "app/libs/animate/animate.sass"
+
+html
+	width: 100% !important
+	body
+	  font-size: 16px
+	  min-width: 320px
+	  position: relative
+	  line-height: 1.6
+	  font-family: "RobotoRegular", sans-serif
+	  overflow-x: hidden
+		width: 100% !important
+
+input
+  outline: none
+  &::placeholder
+    color: rgba(0,0,0,.4)
+.hidden
+  display: none
+
+//Load Libs SASS
+
+*::-webkit-input-placeholder
+  color: #666
+  opacity: 1
+
+*:-moz-placeholder
+  color: #666
+  opacity: 1
+
+*::-moz-placeholder
+  color: #666
+  opacity: 1
+
+*:-ms-input-placeholder
+  color: #666
+  opacity: 1
+
+body input:focus:required:invalid,
+body textarea:focus:required:invalid
+  color: #666
+body input:required:valid,
+body textarea:required:valid
+  color: #666
+
+// Main styles
+
+.fl
+  float: left
+.fr
+  float: right
+.df
+	display: -webkit-flex
+	display: -moz-flex
+	display: -ms-flex
+	display: -o-flex
+	display: flex
+.main__header
+	background-color: #eff0f2
+	height: 100%
+	display: -webkit-flex
+	display: -moz-flex
+	display: -ms-flex
+	display: -o-flex
+	display: flex
+	align-content: space-between
+	flex-direction: column
+	&_nav
+		height: 110px
+		display: -webkit-flex
+		display: -moz-flex
+		display: -ms-flex
+		display: -o-flex
+		display: flex
+		align-items: center
+		.logo
+			width: 100%
+			display: inline-block
+			.text_logo
+				+pttopx(28)
+				text-transform: uppercase
+				font-weight: bold
+				letter-spacing: 1px
+				border: 5px solid #170f1c
+				line-height: 38px
+				padding: 0 8px
+				a
+					text-decoration: none
+					color: #333
+					&:hover
+						text-decoration: none
+						color: #222
+					.logo_mark
+						color: $main_color
+		.main__header_menu
+			display: block
+			.header__hamburger
+				display: block
+				width: 50px
+				height: 50px
+				position: relative
+				// background-color: #000
+				.hamburger
+					display: inline-block
+					width: 100%
+					height: 100%
+					cursor: pointer
+					.line
+						width: 2rem
+						height: 2px
+						display: block
+						background-color: #606061
+						position: absolute
+						top: 50%
+						left: 50%
+						transform: translateX(-8px)
+						&::before
+							content: ''
+							width: 2rem
+							height: 2px
+							display: block
+							background-color: #606061
+							position: absolute
+							top: 50%
+							left: 50%
+							transform: translate(-10px, -8px)
+						&::after
+							content: ''
+							width: 2rem
+							height: 2px
+							display: block
+							background-color: #606061
+							position: absolute
+							top: 50%
+							left: 50%
+							transform: translate(-10px, 7px)
+	&_cnt
+		padding-top: 140px
+		.welcome
+			text-transform: uppercase
+			font-size: 2em
+			font-weight: bold
+			font-family: MontserratBold
+			color: $gray
+			text-shadow: 5px 5px 10px rgba(0,0,0,.24)
+			.mark_ac
+				padding: 10px
+				background-color: $accent_color
+		.wrp_btn_header
+			justify-content: center
+			.btn_header
+				color: $gray
+				width: 230px
+				padding: 18px 0
+				text-transform: uppercase
+				font-family: MontserratRegular
+				background-color: transparent
+				border: 2px solid #777879
+				margin-top: 150px
+				&:hover
+					color: darken($gray, 10%)
+					border: 2px solid darken(#777879, 5%)
+		.wrp_juice
+			margin-top: 50px

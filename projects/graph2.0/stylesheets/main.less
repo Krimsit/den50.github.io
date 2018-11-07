@@ -1,0 +1,175 @@
+@import "node_modules/material-ui/src/less/scaffolding.less";
+@import "node_modules/material-ui/src/less/components.less";
+
+@import "layout";
+@import "overrides";
+@import "checkbox";
+@import "./libs/less/fontawesome";
+
+#app{
+  height: 100%;
+}
+#wrap{
+  height: 100%;
+}
+svg{
+  height: 100%;
+  width: 80%;
+  float: left;
+  g{
+  	text{
+  		cursor: default;
+  	}
+  }
+}
+input[type="number"]{
+	max-width: 50px;
+}
+input{
+	color: #000;
+}
+.wrap_configs{
+	float: right;
+	width: 19.9999%;
+	height: 100%;
+	.configs{
+		overflow: hidden;
+		position: relative;
+		padding: 10px;
+		display: block;
+		background-color: #333;
+		border-radius: 5px;
+		width: 90%;
+		min-height: 97%;
+		margin: 10px auto;
+		color: #fff;
+		.colors_switch{
+			#span_switch_color{
+				padding-bottom: 10px;
+			}
+			padding: 4px;
+			.color_item{
+				display: inline-block;
+				width: 25px;
+				height: 25px;
+				border-radius: 50%;
+				margin-right: 9px;
+				margin-top: 5px;
+			}
+			.color_item.active{
+				border: 1px solid #fff;
+			}
+		}
+		.wrapRadiusChanger{
+			.showRadius{
+				width: 40px;
+				line-height: 30px;
+				background-color: #444;
+				padding: 4px;
+				border-radius: 2px;
+				margin-right: 20px;
+			}
+			.resetRadiusNode{
+				border-bottom: 2px solid #2B9483 !important;
+				width: 100px;
+				background-color: #3BCDB5;
+				color: #fff;
+				border: none;
+				border-radius: 20px;
+				height: 25px;
+			}
+		}
+	.copyright_configs{
+		position: absolute;
+		bottom: 0;
+		text-align: center;
+		width: 100%;
+		color: rgba(255, 255, 255, .4);
+	}
+		
+	}
+	.wrap_history{
+		max-height: 150px;
+		width: 100%;
+		overflow-y: scroll;
+		.history{
+			max-height: 10000px;
+		}
+	}
+}
+.colorfff{
+	color: #fff;
+}
+.wrapMatrix{
+	overflow-y: scroll;
+	max-height: 150px;
+	table.AdjecancyMatrix{
+		tr{
+			td{
+				padding: 0 5px;
+				text-align: center;
+			}
+		}
+	}	
+}
+
+.cgray50{
+	color: #ACACAC;
+}
+.switchMatrix{
+	font-size: 20px !important;
+	margin-right: 5px;
+}
+.IconAction{
+	color: #3BCDB5;
+}.IconActionGold{
+	color: #FFAA0D;
+}
+text.weightPaths{
+	background-color: red !important;
+	border: 2px solid red;
+}
+.itemInfoIcon{
+	font-size: 17px !important;
+	margin-right: 10px;
+}
+.wrapMapItem{
+	margin-top: 10px;
+	padding-left: 20px;
+	background-color: #444;
+}
+.klaster{
+	background-color: #FFAA0D;
+	padding: 3px;
+	border-radius: 3px;
+}
+.wrapInfo{
+	color: #fff;
+	p{
+		color: #fff;
+	}
+	input{
+		color: #000;
+	}
+}
+.InfoAlg{
+	display: block;
+	margin-bottom: 6px;
+}
+.fr{
+	display: block;
+	margin-left: 70px;
+}
+.generateBtn{
+	border-bottom: 2px solid #2257D3 !important;
+	width: 100px;
+	background-color: #2866F7;
+	color: #fff;
+	border: none;
+	border-radius: 20px;
+	height: 30px;
+	transition: all .1s ease-in-out;
+	&:hover{
+		background-color: #2C5ED3;
+	}
+}

@@ -1,0 +1,300 @@
+body {
+    height: 100%;
+    width: 100%;
+    font-size: 16px;
+    min-width: 320px;
+    position: relative;
+    line-height: 1.6;
+    font-family: RobotoRegular,sans-serif;
+    overflow-x: hidden;
+    background-color: #1C2329;
+    color: #fff;
+}
+
+.main_header {
+    width: 100%;
+    height: 80vh;
+    overflow: hidden;
+}
+.main_header .main_nav {
+    width: 100%;
+    height: 210px;
+    margin-top: -60px;
+    -webkit-transform: skew(0,-2deg);
+    -ms-transform: skew(0,-2deg);
+    transform: skew(0,-2deg);
+    overflow: hidden;
+    -webkit-box-shadow: 0 0 20px rgba(0,0,0,.3);
+    box-shadow: 0 0 20px rgba(0,0,0,.3);
+    background-color: #fff;
+    position: relative;
+}
+.main_header .cnt_nav {
+    height: 130px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.main_header .cnt_nav .brand {
+    height: 100%;
+    padding-top: 10px;
+    float: left;
+}
+.main_header .cnt_nav .brand .brand_logo {
+    height: 100%;
+    width: 200px;
+}
+.main_header .cnt_nav .brand .brand_logo img {
+    height: 100px;
+}
+.main_header .cnt_nav .brand .brand_name {
+    padding-top: 10px;
+}
+.main_header .cnt_nav .brand .brand_name span {
+    font-family: RalewayRegular;
+    font-size: 14px;
+}
+.menu {
+    float: right;
+    padding-top: 40px;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    list-style-type: none;
+}
+.menu li.item_menu {
+    padding-left: 15px;
+}
+.menu li.item_menu a {
+    font-family: BebasNeueRegular;
+    color: #333;
+    font-size: 16px;
+}
+.main_cnt_header {
+    height: 100%;
+    position: relative;
+    padding-bottom: 40px;
+}
+.main_cnt_header h1.welcome {
+    text-align: center;
+    font-family: MontserratBlack;
+    font-size: 4.375em;
+    margin-bottom: 0;
+}
+.main_cnt_header .caption {
+    text-align: center;
+    padding-top: 10px;
+    font-family: Montserrat;
+    font-size: 1.5em;
+    margin-top: 0;
+}
+
+
+.kinds_menu {
+	width: 100%;
+	height: 80vh;
+}
+.kinds_menu .kinds_hello {
+	font-family: BebasNeueRegular;
+	text-align: center;
+	padding-bottom: 5vh;
+}
+.kinds_menu .item {
+	display: flex;
+	padding: 20px 50px;
+  height: 70%;
+  justify-content: center;
+  align-items: center;
+}
+@-webkit-keyframes Test {
+  0% {
+    background-position: 0% 51%
+  }
+  50% {
+    background-position: 100% 50%
+  }
+  100% {
+    background-position: 0% 51%
+  }
+}
+@-moz-keyframes Test {
+  0% {
+    background-position: 0% 51%
+  }
+  50% {
+    background-position: 100% 50%
+  }
+  100% {
+    background-position: 0% 51%
+  }
+}
+@keyframes Test {
+  0% {
+    background-position: 0% 51%
+  }
+  50% {
+    background-position: 100% 50%
+  }
+  100% {
+    background-position: 0% 51%
+  }
+}
+.kinds_menu .item .kinds_items {
+	position: relative;
+	overflow: hidden;
+	margin-right: 50px;
+	width: 25%;
+	color: #fff;
+	height: 105%;
+	border: 1px #333 solid;
+	border-radius: 15px;
+	padding-left: 7px;
+	padding-right: 7px;
+	text-align: center;
+	background: linear-gradient(to top right,#ee7752,#e73c7e,#23a6d5,#23d5ab);
+	background-size: 400% 400%;
+	-webkit-animation: Test 15s ease-in-out infinite;
+	animation: Test 15s ease-in-out infinite;
+
+}
+.kinds_menu .item .kinds_items .kinds_title {
+	color: #fff;
+	text-align: center;
+	padding-bottom: 10px;
+}
+.kinds_menu .item .kinds_items .kinds_theory {
+	color: #fff;
+	font-size: 13px;
+}
+.tehnology {
+	width: 100%;
+	height: 50vh;
+}
+.tehnology .tehnology_title {
+	font-family: MontserratBold; 
+	font-size: 54px; 
+	font-weight: 300; 
+	line-height: 58px; 
+	text-align: center;
+}
+.tehnology .tehnology_text {
+	font-family: Montserrat;
+	text-align: center;
+	color: #fff;
+}
+.conclusion {
+	width: 100%;
+	height: 70vh;
+}
+.conclusion .conclusion_title {
+	font-family: MontserratBold;
+	font-size: 50px;
+	text-align: center;
+	margin-bottom: 0;
+}
+.conclusion .conclusion_text {
+	font-family: Montserrat;
+	margin: 3% 5% 0 5%;
+	text-align: center;
+}
+
+.main_footer {
+  width: 100%;
+  display: block;
+}
+.main_footer .footer_bottom {
+  width: 100%;
+  height: 311px;
+  background-color: #262b2e;
+}
+.items {
+  height: 100%;
+  color: rgba(255,255,255,.8);
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.items .follow_us {
+  text-transform: uppercase;
+  font-family: RalewayRegular;
+  font-size: 16px;
+  padding: 0 0 18px 0;
+  margin: 0;
+  display: inline-block;
+}
+.items .icons {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 43px;
+}
+.items .icons .wrp_icon {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 46px;
+  height: 46px;
+  background-color: #3f4244;
+  margin-right: 8px;
+  -webkit-transition: all .1s ease-in-out;
+  -o-transition: all .1s ease-in-out;
+  transition: all .1s ease-in-out;
+}
+.items .copyright {
+  color: rgba(255,255,255,.4);
+  display: inline-block;
+}

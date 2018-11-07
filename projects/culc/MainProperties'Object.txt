@@ -1,0 +1,7 @@
+//Examples
+var obj = Object.create(null);//Creative new empty object
+
+
+//proreties
+/*Set*/Object.setPrototypeOf(obj, proto);//arg1 is object and arg2 is property
+/*Read*/Object.getPrototypeOf(obj)//arg1 is object 

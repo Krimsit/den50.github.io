@@ -1,0 +1,123 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+body{
+	background: #E1E1E1;
+}
+.time{
+	float: right;
+}
+h1{
+	width: 400px;
+	float: left;
+	font-family: sans-serif;
+}
+h2{
+	font-family: sans-serif;
+}
+.ms{
+	float: right;
+	width: 45px;
+}
+.timer{
+	margin-right: 100px;
+}
+.Calc{
+	width: 400px;
+	height: 600px;
+	background: #919191;
+	margin: 10px 10px;
+	float: left;
+	transition: all ease-out 0.3s;
+}
+.output{
+	display: block;
+	float: left;
+}
+.input-output_calc{
+	width: 335px;
+	height: 70px;
+	font-size: 50px;
+	margin: 20px 29px;
+	text-align: right;
+	transition: all ease-out 0.3s;
+}
+.buttons{
+	width: 350px;
+	min-height: 450px;
+	/*background: #000;*/
+	margin: -10px 26px;
+	float: left;
+	display: block;
+}
+.buttonNaumeral{
+	width: 80px;
+	height: 60px;
+	background-color: #399FDD;
+	margin: 3px;
+	display: block;
+	float: left;
+	text-align: center;
+	font-size: 30px;
+	font-family: sans-serif;
+	padding-top: 20px;
+	cursor: pointer;
+}
+.buttons_module{
+	width: 80px;
+	height: 60px;
+	background-color: #E04343;
+	margin: 3px;
+	display: block;
+	float: left;
+	text-align: center;
+	font-size: 30px;
+	font-family: sans-serif;
+	padding-top: 20px;
+	cursor: pointer;
+}
+.buttons_module:hover{
+	background-color: #D84040;
+}
+.buttons_module:active{
+	background-color: #DE4D4D;
+}
+.buttonNaumeral:hover{
+	background-color: #3797D3;
+}
+.buttonNaumeral:active{
+	background-color: #45A3DD;
+}
+
+.big{
+	width: 166px;
+}
+
+.temp{
+	width: 200px;
+	height: 100px;
+	margin: 0 0 0 100px;
+	border: 1px solid #000;
+	float: left;
+	font-size: 30px;
+	font-family: sans-serif;
+	background-color: #fff;
+	overflow: scroll;
+}
+.module_calc{
+	display: none;
+	margin-top: -440px;
+	width: 378px;
+	height: 500px;
+	float: right;
+}
+.const{
+	background-color: #30CE89;
+}
+.const:hover{
+	background-color: #2BBB7D;
+}
+.const:active{
+	background-color: #49CA92;
+}

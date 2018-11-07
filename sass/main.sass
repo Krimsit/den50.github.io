@@ -1,0 +1,618 @@
+@import "bourbon"
+@import "vars.sass"
+@import "fonts.sass"
+
+.aboutus
+	background-color: #f8fafa
+	height: 985px
+	width: 100%
+	padding-top: 129px
+	&__title
+		&_welcome
+			margin: 0
+			text-transform: uppercase
+			font-family: MontserratBold
+			color: #000
+			font-size: 38px
+		.substraction
+			color: #5e5f5f
+			font-family: MerriweatherRegular
+			text-transform: uppercase
+			padding: 18px 0
+			font-size: 18px
+	.slider
+		margin-top: 147px
+		.caption_slider
+			padding-left: 57px
+			h3
+				color: #3e3f3f
+				text-transform: uppercase
+				font-family: MerriweatherBold
+				font-size: 17px
+				padding: 10px 0
+			p
+				font-family: RalewayRegular
+				color: #727373
+				line-height: 30px
+				font-size: 16px
+		.slider_imgs
+			position: relative
+			width: 100%
+			height: 100%
+			display: block
+			height: 484px
+			.rect_bg
+				position: absolute
+				width: 480px
+				height: 412px
+				background-color: #eeeff1
+				display: block
+				top: 0
+				left: 0
+				bottom: 0
+				right: 0
+				margin: auto
+				// margin-left: calc(50% - (480px / 2))
+				// margin-top: calc(50% - (412px / 2))
+			.carousel
+				position: relative
+				.carousel-inner
+					.item
+						img
+							display: block
+							margin: auto
+				.carousel-indicators
+					position: absolute
+					bottom: -90px !important
+					ol.carousel-indicators
+						display: -webkit-flex
+						display: -moz-flex
+						display: -ms-flex
+						display: -o-flex
+						display: flex
+						justify-content: center
+						li
+							display: block
+							width: 10px !important
+							height: 10px !important
+							background-color: #d0d0d0 !important
+
+ol.carousel-indicators li.active 
+  background: #71f6eb
+
+
+ol.carousel-indicators li
+	width: 10px
+	height: 10px
+	background-color: #d0d0d0
+	border-radius: 3px !important
+
+
+// Section out works - FEATURED WORKS
+section.works
+	width: 100%
+	height: 1164px
+	background-color: #FFF
+	padding-top: 130px
+	.wrp_welcome
+		padding-bottom: 125px
+		h1
+			margin: 0
+			text-transform: uppercase
+			font-family: MontserratBold
+			color: #000
+			font-size: 38px
+		.substraction
+			color: #5e5f5f
+			font-family: MerriweatherRegular
+			text-transform: uppercase
+			padding: 18px 0
+			font-size: 18px
+	.main_features.items
+		padding-top: 124px 0 125px 0
+		.item
+			padding-bottom: 30px
+			img
+				width: 100%
+				display: block
+
+// Section our SERVICES
+
+section.our_services
+	background-color: #f9fbfb
+	height: 1813px
+	padding: 125px 0
+	.wrp_welcome
+		h1
+			margin: 0
+			text-transform: uppercase
+			font-family: MontserratBold
+			color: #000
+			font-size: 38px
+		.substraction
+			color: #5e5f5f
+			font-family: MerriweatherRegular
+			text-transform: uppercase
+			padding: 18px 0
+			font-size: 18px
+	.items
+		padding-top: 125px
+		.row_items
+			height: 423px
+		.item
+			padding: 14px 7px
+			position: relative
+			img
+				
+				height: 100%
+				overflow: hidden
+			.caption_long_ontop_first.active
+				width: 652px
+				height: 422px
+				position: absolute
+				top: 14px
+				left: 7px
+				bottom: 14px
+				right: 7px
+				background-color: $main_color
+				padding: 64px
+				&:hover
+				h3
+					font-family: MerriweatherBold
+					text-transform: uppercase
+					font-size: 20px
+				p
+					font-family: RalewayRegular
+					color: #727373
+					padding-top: 36px
+				.close
+					color: #3f8983
+					float: left
+					margin-top: 60px
+					transition: all .1s ease-in-out
+					&:hover
+						color: #387973
+			.caption_ontop
+				opacity: 0
+				position: absolute
+				background-color: rgba(0,0,0,.65)
+				top: 14px
+				left: 9px
+				padding: 64px
+				color: #f7f7f7
+				display: -webkit-flex
+				display: -moz-flex
+				display: -ms-flex
+				display: -o-flex
+				display: flex
+				justify-content: flex-end
+				flex-direction: column
+				transition: all .2s ease-in-out
+				h3
+					font-family: MerriweatherBold
+					text-transform: uppercase
+					font-size: 20px
+					padding-bottom: 20px
+				p
+					font-family: RalewayRegular
+					font-size: 16px
+					padding-bottom: 40px
+				a
+					color: #f7f7f7
+					span
+						font-family: RalewayMedium
+						text-transform: uppercase
+					i
+						padding-left: 15px
+				&:hover
+					opacity: 1
+			.caption_short_ontop
+				width: 477px
+				height: 422px
+				&_last
+					left: 7px
+			.caption_long_ontop
+				width: 652px
+				height: 422px
+				&_last
+					left: 24px 
+
+
+
+section.our_team
+	padding: 125px 0
+	.wrp_welcome
+		padding-bottom: 100px
+		h1
+			margin: 0
+			text-transform: uppercase
+			font-family: MontserratBold
+			color: #000
+			font-size: 38px
+		.substraction
+			color: #5e5f5f
+			font-family: MerriweatherRegular
+			text-transform: uppercase
+			padding: 18px 0
+			font-size: 18px
+	.items
+		.item
+			padding: 0 8px 8px 8px 
+			position: relative
+			img
+				width: 100%
+				display: block
+			.caption
+				position: absolute
+				bottom: 0
+				top: 0
+				left: 0
+				right: 0
+				width: 335px
+				margin: 0 auto
+				padding-bottom: 20px
+				display: -webkit-flex
+				display: -moz-flex
+				display: -ms-flex
+				display: -o-flex
+				display: flex
+				justify-content: flex-end
+				flex-direction: column
+				opacity: 0
+				transition: all .2s ease-in-out
+				.wrp_cap
+					background-color: $main_color
+					padding: 27px 37px
+					position: relative
+					.title
+						.name_caption
+							font-family: MerriweatherBlack
+							display: inline-block
+							padding-bottom: 17px
+						.more_name_caption
+							font-family: MerriweatherRegular
+							color: #767776
+							font-style: italic
+					p.substraction
+						font-family: RalewayRegular
+						color: #16312f
+					.wrp_icons
+						i
+							color: #2f6f6a
+							padding-right: 15px
+							font-size: 13px
+							cursor: pointer
+							&:hover
+								color: darken(#2f6f6a, 10%)
+					&::before
+						content: "\f0de"
+						font-family: fontawesome
+						position: absolute
+						font-size: 29px
+						color: $main_color
+						top: -18px
+						left: 21px
+				&:hover
+					opacity: 1
+
+section.what_they_say
+	background-color: #f9fbfb
+	padding: 125px 0 175px 0
+	.title
+
+		&_welcome
+			margin: 0
+			text-transform: uppercase
+			font-family: MontserratBold
+			color: #000
+			font-size: 38px
+		.substraction
+			color: #5e5f5f
+			font-family: MerriweatherRegular
+			text-transform: uppercase
+			padding: 18px 0
+			font-size: 18px
+	.slider
+		padding-top: 125px
+		.carousel-inner
+			position: relative
+			.item
+				height: 483px
+				overflow: none
+				padding: 10px 0
+				&_img
+					overflow: none
+					height: 100%
+					position: relative
+					// .rect_bg
+					// 	position: absolute
+					// 	width: 480px
+					// 	height: 412px
+					// 	background-color: #eeeff1
+					// 	display: block
+					// 	top: 0
+					// 	left: 0
+					// 	bottom: 0
+					// 	right: 0
+					// 	margin: auto
+					// 	z-index: 3
+					&::before
+						content: ''
+						position: absolute
+						width: 480px
+						height: 412px
+						background-color: #eeeff1
+						display: block
+						top: 0
+						left: 0
+						bottom: 0
+						right: 0
+						margin: auto
+					img
+						position: absolute
+						height: 100%
+						top: 0
+						bottom: 0
+						left: 0
+						right: 0
+						margin: auto
+						box-shadow: 0 0 20px rgba(0,0,0,.2)
+						z-index: 4
+						border-radius: 3px
+				&_caption
+					position: relative
+					height: 100%
+					padding-left: 80px
+					.caption
+						position: absolute
+						top: 0
+						left: 50px
+						right: 0
+						bottom: 0
+						margin: auto
+						height: 412px
+						background-color: #eaebed
+						display: -webkit-flex
+						display: -moz-flex
+						display: -ms-flex
+						display: -o-flex
+						display: flex
+						justify-content: center
+						align-items: center
+						padding: 0 82px
+						.wrp_cap
+							display: -webkit-flex
+							display: -moz-flex
+							display: -ms-flex
+							display: -o-flex
+							display: flex
+							flex-direction: column
+							justify-content: center
+							.title
+								text-align: center
+								.name_caption
+									font-family: MerriweatherBlack
+									display: inline-block
+									padding-bottom: 17px
+									font-size: 20px
+									padding-bottom: 33px
+								.more_name_caption
+									font-family: MerriweatherRegular
+									color: #767776
+									font-style: italic
+									font-size: 15px
+							p.substraction
+								font-family: RalewayRegular
+								color: #464647
+								font-size: 16px
+								text-align: center
+								padding-bottom: 35px
+							.wrp_stars
+								display: -webkit-flex
+								display: -moz-flex
+								display: -ms-flex
+								display: -o-flex
+								display: flex
+								justify-content: center
+								i
+									color: #f2da3b
+									padding-right: 8px
+									&:last-child
+										padding-right: 0
+		.carousel
+			position: relative
+			.carousel-indicators_wrp
+				// padding-top: 47px
+				.carousel-indicators
+					position: absolute
+					bottom: 0
+					left: 0
+					right: 0
+					top: 0
+					margin: 47px auto
+		.controls
+			position: absolute
+			right: 0
+			display: -webkit-flex
+			display: -moz-flex
+			display: -ms-flex
+			display: -o-flex
+			display: flex
+			// flex-direction: row-reverse
+			// order: -1
+			.carousel-control_icon
+				height: 53px
+				width: 53px
+				display: block
+				position: relative
+				background-color: #fff
+				opacity: 1
+				text-shadow: none
+				box-shadow: 0 0 15px rgba(0,0,0,.2)
+				margin-right: 30px
+				border-radius: 4px
+				transition: all .15s ease-in-out
+				&:last-child
+					margin-right: 0
+				&:hover
+					background-color: $main_color
+					span
+						color: #fff
+				span
+					color: #b2b2b2
+					font-size: 16px
+					line-height: 32px
+					transition: all .15s ease-in-out
+
+.our_sponsors
+	padding: 125px 0
+	.items
+		.row_top
+			width: 100%
+			height: auto
+			display: -webkit-flex
+			display: -moz-flex
+			display: -ms-flex
+			display: -o-flex
+			display: flex
+			align-items: center
+			justify-content: center
+			padding-bottom: 67px
+			img
+				padding-right: 88px
+				&:last-child
+					padding-right: 0
+		.row_bottom
+			width: 100%
+			height: auto
+			display: -webkit-flex
+			display: -moz-flex
+			display: -ms-flex
+			display: -o-flex
+			display: flex
+			align-items: center
+			justify-content: space-between
+footer.main_footer
+	// height: 1017px
+	width: 100%
+	display: block
+	// background-color: red
+	.form
+		height: 706px
+		background-image: url(../img/footer_bottom_bg.jpg)
+		background-position: center
+		background-size: cover
+		padding: 150px 0
+		.forms
+			background-color: rgba(#39454d, .7)
+			padding: 32px
+			height: 475px
+			position: relative
+			textarea, input
+				width: 100%
+				background-color: transparent
+				border: none
+				border-bottom: 2px solid #858b8e
+				height: 50px
+				margin-top: 10px
+				padding-top: 15px
+				font-family: RalewayRegular
+				color: rgba(#fff, .6)
+				font-size: 15px
+				transition: all .2s ease-in-out
+				&::placeholder
+					color: rgba(#fff, .6)
+					font-size: 15px
+				&:focus
+					border-bottom: 2px solid lighten(#858b8e, 10%)
+			textarea
+				padding-top: 20px
+				resize: none
+				height: 120px
+				outline: none
+			button.send_massage
+				margin-top: 32px
+				font-size: 18px
+				padding: 16px 0
+				width: 245px
+				text-transform: uppercase
+				font-family: MontserratRegular
+				background-color: #6eeee4
+				color: #214744
+				border: none
+				outline: none
+				position: absolute
+				bottom: 32px
+		.contacts
+			background-color: rgba(#39454d, .7)
+			padding: 32px
+			height: auto
+			color: rgba(#fff, .7)
+			font-family: RalewayRegular
+			p
+				margin: 0
+				font-size: 15px
+			.wrp
+				padding: 37px 0
+				font-size: 15px
+			.maps
+				img
+					width: 100%
+	.footer_bottom
+		width: 100%
+		height: 311px
+		background-color: #262b2e
+		.items
+			height: 100%
+			color: rgba(#fff, .8)
+			display: -webkit-flex
+			display: -moz-flex
+			display: -ms-flex
+			display: -o-flex
+			display: flex
+			justify-content: center
+			flex-direction: column
+			align-items: center
+			.follow_us
+				text-transform: uppercase
+				font-family: RalewayRegular
+				font-size: 16px
+				padding: 0 0 18px 0
+				margin: 0
+				display: inline-block
+			.icons
+				display: -webkit-flex
+				display: -moz-flex
+				display: -ms-flex
+				display: -o-flex
+				display: flex
+				flex-direction: row
+				padding-bottom: 43px
+				.wrp_icon
+					display: -webkit-flex
+					display: -moz-flex
+					display: -ms-flex
+					display: -o-flex
+					display: flex
+					justify-content: center
+					align-items: center
+					width: 46px
+					height: 46px
+					background-color: #3f4244
+					margin-right: 8px
+					transition: all .1s ease-in-out
+					&:last-child
+						margin-right: 0
+					i
+						display: inline-block
+						font-size: 24px
+						transition: all .1s ease-in-out
+					&:hover
+						background-color: #6eeee4
+						i
+							color: #081e1c
+			.copyright
+				color: rgba(#fff, .4)
+				display: inline-block
+//ALWAYS END
+@import "media"

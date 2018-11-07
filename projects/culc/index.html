@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>change demo</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <!--<script src="https://code.jquery.com/jquery-1.10.2.js"></script>-->
+</head>
+<body>
+  <h2 class="ms"></h2>
+  <h2 class="time"><span class="hours"></span></h2>
+
+
+
+  <div class="Calc">
+    <div class="output">
+      <input type="text" class="input-output_calc" value="2 * (1 + 1)" disabled="disabled">
+    </div>
+    <div class="buttons">
+      <div class="clear buttonNaumeral">CE</div>
+      <div class="delete buttonNaumeral"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
+      <div class="group1">
+      <div class="point buttonNaumeral">,</div>
+      <div class="sqrt buttonNaumeral">&Sqrt;</div>
+        <div class="b1 buttonNaumeral">1</div>
+        <div class="b2 buttonNaumeral">2</div>
+        <div class="b3 buttonNaumeral">3</div>
+        <div class="b4 buttonNaumeral">4</div>
+      </div>
+      <div class="group2">
+        <div class="b5 buttonNaumeral">5</div>
+        <div class="b6 buttonNaumeral">6</div>
+        <div class="b7 buttonNaumeral">7</div>
+        <div class="b8 buttonNaumeral">8</div>
+      </div>
+      
+      <div class="b9 buttonNaumeral">9</div>
+      <div class="b0 buttonNaumeral">0</div>
+      <div class="plus buttonNaumeral">+</div>
+      <div class="minus buttonNaumeral">-</div>
+      <div class="del buttonNaumeral">/</div>
+      <div class="mp buttonNaumeral">*</div>
+      <div class="equally buttonNaumeral big">=</div>
+      <label><input type="radio" name="module" class="no_module" checked>Обычный</label>
+      <label><input type="radio" name="module" class="active_module">Модульный</label>
+      <label title="В разроботке"><input type="radio" name="module" class="active_module_constr" disabled="disabled" title="В разроботке">Конструктор</label>
+    </div>
+    <div class="module">
+      
+      <div class="module_calc">
+        <div class="brecket_left buttons_module">(</div>
+        <div class="brecket_right buttons_module">)</div>
+        <div class="sqrt2 buttons_module">x<sup>2</sup></div>
+        <div class="pi buttons_module const">&pi;</div>
+        <div class="ceil_func buttons_module">Ceil()</div>
+        <div class="floor_func buttons_module">floor()</div>
+        <div class="round_func buttons_module big">round()</div>
+      </div>
+    </div>
+    
+  </div>
+    <div class="temp">
+      
+    </div>
+  <script src="main.js"></script>
+</body>
+</html>
